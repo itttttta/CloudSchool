@@ -1,0 +1,16 @@
+//
+//  CloudSchool.pch
+//  CloudSchool
+//
+//  Created by 汪达 on 16/9/10.
+//  Copyright © 2016年 wd. All rights reserved.
+//
+
+#ifndef CloudSchool_pch
+#define CloudSchool_pch
+#import "WDMacros.h"
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* CloudSchool_pch */

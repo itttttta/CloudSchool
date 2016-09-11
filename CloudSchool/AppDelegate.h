@@ -13,5 +13,9 @@
 @property (strong, nonatomic) UIWindow *window;
 
 
++ (instancetype)sharedAppDelegate;
+
+- (void)pushViewController:(UIViewController *)viewController;
+
 @end
 

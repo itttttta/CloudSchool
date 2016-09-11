@@ -7,16 +7,27 @@
 //
 
 #import "AppDelegate.h"
+#import "BaseNavViewController.h"
+#import "WDTabBarController.h"
 
 @interface AppDelegate ()
 
 @end
 
 @implementation AppDelegate
-
++ (instancetype)sharedAppDelegate
+{
+    return (AppDelegate *)[UIApplication sharedApplication].delegate;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    
+    BaseNavViewController *mainTab = [[BaseNavViewController alloc] initWithRootViewController:[[WDTabBarController alloc] init]];
+    mainTab.navigationBarHidden = YES;
+    self.window.rootViewController = mainTab;
     return YES;
 }
 
@@ -40,6 +51,35 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+// 获取当前活动的navigationcontroller
+- (BaseNavViewController *)navigationViewController
+{
+    UIWindow *window = self.window;
+    
+    if ([window.rootViewController isKindOfClass:[BaseNavViewController class]])
+    {
+        return (BaseNavViewController *)window.rootViewController;
+    }
+    else if ([window.rootViewController isKindOfClass:[UITabBarController class]])
+    {
+        UIViewController *selectVc = [((UITabBarController *)window.rootViewController) selectedViewController];
+        if ([selectVc isKindOfClass:[BaseNavViewController class]])
+        {
+            return (BaseNavViewController *)selectVc;
+        }
+    }
+    return nil;
+}
+
+- (void)pushViewController:(UIViewController *)viewController
+{
+    @autoreleasepool
+    {
+        viewController.hidesBottomBarWhenPushed = YES;
+        [[self navigationViewController] pushViewController:viewController animated:YES];
+    }
 }
 
 @end
