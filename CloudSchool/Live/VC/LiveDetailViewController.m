@@ -7,8 +7,10 @@
 //
 
 #import "LiveDetailViewController.h"
-
-@interface LiveDetailViewController ()
+#import "LiveDetailHeadView.h"
+#import "LiveDetailFooterView.h"
+@interface LiveDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
+@property (nonatomic, strong) UITableView *tableView;
 
 @end
 
@@ -18,13 +20,81 @@
     [super viewDidLoad];
     self.title = @"课程详情";
     self.view.backgroundColor = KCOLOR_WHITE;
+    [self tableView];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+}
+#pragma mark
+#pragma mark TableViewDelegate
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 0.01;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return [LiveDetailFooterView getHeight];
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return [LiveDetailHeadView getHeight];
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    LiveDetailFooterView *footerView = [[LiveDetailFooterView alloc] initWithType:Face];
+    return footerView;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    LiveDetailHeadView *headView = [[LiveDetailHeadView alloc] init];
+    return headView;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+}
+#pragma mark
+#pragma mark UITableViewDataSource
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellIdentity = @"cell";
+    UITableViewCell *cell = [_tableView dequeueReusableCellWithIdentifier:cellIdentity];
+    if(!cell)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentity];
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.textLabel.text = @"hello";
+    
+    
+    return cell;
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 0;
+}
+#pragma mark
+#pragma mark ViewInit
+
+- (UITableView *)tableView
+{
+    if(!_tableView)
+    {
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0, KSCREEN_WIDTH, KSCREEN_HEIGHT-KNav_Height) style:UITableViewStyleGrouped];
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+        _tableView.backgroundColor = KCOLOR_WHITE;
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        self.edgesForExtendedLayout=UIRectEdgeNone;
+        self.extendedLayoutIncludesOpaqueBars=NO;
+        self.automaticallyAdjustsScrollViewInsets=NO;
+        [self.view addSubview:_tableView];
+        
+    }
+    return _tableView;
+}
 
 
 @end

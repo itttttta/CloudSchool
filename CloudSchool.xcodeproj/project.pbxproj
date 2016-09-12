@@ -25,6 +25,10 @@
 		112BDC421D850A9E005214B3 /* HelpCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 112BDC411D850A9E005214B3 /* HelpCell.m */; };
 		112BDC451D85219E005214B3 /* ClassBeginCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 112BDC441D85219E005214B3 /* ClassBeginCell.m */; };
 		112BDC481D8536B5005214B3 /* LiveDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 112BDC471D8536B5005214B3 /* LiveDetailViewController.m */; };
+		113BB6011D8670EF006A5283 /* LiveDetailHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 113BB6001D8670EF006A5283 /* LiveDetailHeadView.m */; };
+		113BB6041D8670FE006A5283 /* LiveDetailFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 113BB6031D8670FE006A5283 /* LiveDetailFooterView.m */; };
+		113BB6071D86742F006A5283 /* SelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 113BB6061D86742F006A5283 /* SelectView.m */; };
+		113BB60A1D868607006A5283 /* LiveProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 113BB6091D868607006A5283 /* LiveProgressView.m */; };
 		113E5F9E1D83967C00620910 /* BaseNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 113E5F621D83967C00620910 /* BaseNavViewController.m */; };
 		113E5F9F1D83967C00620910 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 113E5F641D83967C00620910 /* BaseViewController.m */; };
 		113E5FA01D83967C00620910 /* NSDate+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 113E5F671D83967C00620910 /* NSDate+Category.m */; };
@@ -97,6 +101,14 @@
 		112BDC441D85219E005214B3 /* ClassBeginCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassBeginCell.m; sourceTree = "<group>"; };
 		112BDC461D8536B5005214B3 /* LiveDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveDetailViewController.h; sourceTree = "<group>"; };
 		112BDC471D8536B5005214B3 /* LiveDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveDetailViewController.m; sourceTree = "<group>"; };
+		113BB5FF1D8670EF006A5283 /* LiveDetailHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveDetailHeadView.h; sourceTree = "<group>"; };
+		113BB6001D8670EF006A5283 /* LiveDetailHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveDetailHeadView.m; sourceTree = "<group>"; };
+		113BB6021D8670FE006A5283 /* LiveDetailFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveDetailFooterView.h; sourceTree = "<group>"; };
+		113BB6031D8670FE006A5283 /* LiveDetailFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveDetailFooterView.m; sourceTree = "<group>"; };
+		113BB6051D86742F006A5283 /* SelectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectView.h; sourceTree = "<group>"; };
+		113BB6061D86742F006A5283 /* SelectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectView.m; sourceTree = "<group>"; };
+		113BB6081D868607006A5283 /* LiveProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveProgressView.h; sourceTree = "<group>"; };
+		113BB6091D868607006A5283 /* LiveProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveProgressView.m; sourceTree = "<group>"; };
 		113E5F611D83967C00620910 /* BaseNavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNavViewController.h; sourceTree = "<group>"; };
 		113E5F621D83967C00620910 /* BaseNavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNavViewController.m; sourceTree = "<group>"; };
 		113E5F631D83967C00620910 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
@@ -399,6 +411,14 @@
 				113E5FDE1D83EE6700620910 /* LiveHeadView.m */,
 				113E5FE01D83EE7800620910 /* LiveCell.h */,
 				113E5FE11D83EE7800620910 /* LiveCell.m */,
+				113BB5FF1D8670EF006A5283 /* LiveDetailHeadView.h */,
+				113BB6001D8670EF006A5283 /* LiveDetailHeadView.m */,
+				113BB6021D8670FE006A5283 /* LiveDetailFooterView.h */,
+				113BB6031D8670FE006A5283 /* LiveDetailFooterView.m */,
+				113BB6051D86742F006A5283 /* SelectView.h */,
+				113BB6061D86742F006A5283 /* SelectView.m */,
+				113BB6081D868607006A5283 /* LiveProgressView.h */,
+				113BB6091D868607006A5283 /* LiveProgressView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -606,6 +626,7 @@
 				113E5FA01D83967C00620910 /* NSDate+Category.m in Sources */,
 				113E5FE21D83EE7800620910 /* LiveCell.m in Sources */,
 				113E5FDF1D83EE6700620910 /* LiveHeadView.m in Sources */,
+				113BB60A1D868607006A5283 /* LiveProgressView.m in Sources */,
 				113E5FC21D8398A500620910 /* LiveViewController.m in Sources */,
 				113E5FA11D83967C00620910 /* NSDateFormatter+Category.m in Sources */,
 				113E5FA41D83967C00620910 /* ObjcRuntime.m in Sources */,
@@ -625,6 +646,8 @@
 				112BDC451D85219E005214B3 /* ClassBeginCell.m in Sources */,
 				113E5FDA1D83D1FE00620910 /* QRCodeViewController.m in Sources */,
 				113E5FB61D83967C00620910 /* MyImageViewer.m in Sources */,
+				113BB6041D8670FE006A5283 /* LiveDetailFooterView.m in Sources */,
+				113BB6071D86742F006A5283 /* SelectView.m in Sources */,
 				112BDC301D84F378005214B3 /* MyTaskCell.m in Sources */,
 				112BDC241D84EE54005214B3 /* HelpViewController.m in Sources */,
 				113E5FD71D83B9EB00620910 /* ClassCollectionView.m in Sources */,
@@ -642,6 +665,7 @@
 				113E5FB91D83967C00620910 /* WDTabBarController.m in Sources */,
 				112BDC1E1D84EE40005214B3 /* LiveRecordViewController.m in Sources */,
 				112BDC2A1D84EE74005214B3 /* AbortViewController.m in Sources */,
+				113BB6011D8670EF006A5283 /* LiveDetailHeadView.m in Sources */,
 				113E5FA81D83967C00620910 /* UIView+Additions.m in Sources */,
 				113E5FA21D83967C00620910 /* NSObject+ObjectMap.m in Sources */,
 				113E5FA91D83967C00620910 /* UIView+Appear.m in Sources */,

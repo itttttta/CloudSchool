@@ -13,6 +13,8 @@
 #import "UIView+Additions.h"
 #import "BlocksKit+UIKit.h"
 #import "AppDelegate.h"
+#import <ReactiveCocoa.h>
+#import "PublicMethod.h"
 
 //.打印开关控制
 //----------------------------------------------------------------------------------------------
