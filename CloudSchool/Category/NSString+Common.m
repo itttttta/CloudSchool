@@ -10,360 +10,705 @@
 #import <CommonCrypto/CommonDigest.h>
 //#import "TTTAttributedLabel.h"
 //#import "RegexKitLite.h"
-#import "sys/utsname.h"
+#define kCommonMiddleTextFont      [UIFont systemFontOfSize:14]
+
+#define HANZI_START 19968
+#define HANZI_COUNT 20902
+#define CommonReturnAutoReleased(__v) (__v)
+
+
+
+static char firstLetterArray[HANZI_COUNT] =
+"ydkqsxnwzssxjbymgcczqpssqbycdscdqldylybssjgyqzjjfgcclzznwdwzjljpfyynnjjtmynzwzhflzppqhgccyynmjqyxxgd"
+"nnsnsjnjnsnnmlnrxyfsngnnnnqzggllyjlnyzssecykyyhqwjssggyxyqyjtwktjhychmnxjtlhjyqbyxdldwrrjnwysrldzjpc"
+"bzjjbrcfslnczstzfxxchtrqggddlyccssymmrjcyqzpwwjjyfcrwfdfzqpyddwyxkyjawjffxjbcftzyhhycyswccyxsclcxxwz"
+"cxnbgnnxbxlzsqsbsjpysazdhmdzbqbscwdzzyytzhbtsyyfzgntnxjywqnknphhlxgybfmjnbjhhgqtjcysxstkzglyckglysmz"
+"xyalmeldccxgzyrjxjzlnjzcqkcnnjwhjczccqljststbnhbtyxceqxkkwjyflzqlyhjxspsfxlmpbysxxxytccnylllsjxfhjxp"
+"jbtffyabyxbcczbzyclwlczggbtssmdtjcxpthyqtgjjxcjfzkjzjqnlzwlslhdzbwjncjzyzsqnycqynzcjjwybrtwpyftwexcs"
+"kdzctbyhyzqyyjxzcfbzzmjyxxsdczottbzljwfckscsxfyrlrygmbdthjxsqjccsbxyytswfbjdztnbcnzlcyzzpsacyzzsqqcs"
+"hzqydxlbpjllmqxqydzxsqjtzpxlcglqdcwzfhctdjjsfxjejjtlbgxsxjmyjjqpfzasyjnsydjxkjcdjsznbartcclnjqmwnqnc"
+"lllkbdbzzsyhqcltwlccrshllzntylnewyzyxczxxgdkdmtcedejtsyyssdqdfmxdbjlkrwnqlybglxnlgtgxbqjdznyjsjyjcjm"
+"rnymgrcjczgjmzmgxmmryxkjnymsgmzzymknfxmbdtgfbhcjhkylpfmdxlxjjsmsqgzsjlqdldgjycalcmzcsdjllnxdjffffjcn"
+"fnnffpfkhkgdpqxktacjdhhzdddrrcfqyjkqccwjdxhwjlyllzgcfcqjsmlzpbjjblsbcjggdckkdezsqcckjgcgkdjtjllzycxk"
+"lqccgjcltfpcqczgwbjdqyzjjbyjhsjddwgfsjgzkcjctllfspkjgqjhzzljplgjgjjthjjyjzccmlzlyqbgjwmljkxzdznjqsyz"
+"mljlljkywxmkjlhskjhbmclyymkxjqlbmllkmdxxkwyxwslmlpsjqqjqxyqfjtjdxmxxllcrqbsyjbgwynnggbcnxpjtgpapfgdj"
+"qbhbncfjyzjkjkhxqfgqckfhygkhdkllsdjqxpqyaybnqsxqnszswhbsxwhxwbzzxdmndjbsbkbbzklylxgwxjjwaqzmywsjqlsj"
+"xxjqwjeqxnchetlzalyyyszzpnkyzcptlshtzcfycyxyljsdcjqagyslcllyyysslqqqnldxzsccscadycjysfsgbfrsszqsbxjp"
+"sjysdrckgjlgtkzjzbdktcsyqpyhstcldjnhmymcgxyzhjdctmhltxzhylamoxyjcltyfbqqjpfbdfehthsqhzywwcncxcdwhowg"
+"yjlegmdqcwgfjhcsntmydolbygnqwesqpwnmlrydzszzlyqpzgcwxhnxpyxshmdqjgztdppbfbhzhhjyfdzwkgkzbldnzsxhqeeg"
+"zxylzmmzyjzgszxkhkhtxexxgylyapsthxdwhzydpxagkydxbhnhnkdnjnmyhylpmgecslnzhkxxlbzzlbmlsfbhhgsgyyggbhsc"
+"yajtxglxtzmcwzydqdqmngdnllszhngjzwfyhqswscelqajynytlsxthaznkzzsdhlaxxtwwcjhqqtddwzbcchyqzflxpslzqgpz"
+"sznglydqtbdlxntctajdkywnsyzljhhdzckryyzywmhychhhxhjkzwsxhdnxlyscqydpslyzwmypnkxyjlkchtyhaxqsyshxasmc"
+"hkdscrsgjpwqsgzjlwwschsjhsqnhnsngndantbaalczmsstdqjcjktscjnxplggxhhgoxzcxpdmmhldgtybynjmxhmrzplxjzck"
+"zxshflqxxcdhxwzpckczcdytcjyxqhlxdhypjqxnlsyydzozjnhhqezysjyayxkypdgxddnsppyzndhthrhxydpcjjhtcnnctlhb"
+"ynyhmhzllnnxmylllmdcppxhmxdkycyrdltxjchhznxclcclylnzsxnjzzlnnnnwhyqsnjhxynttdkyjpychhyegkcwtwlgjrlgg"
+"tgtygyhpyhylqyqgcwyqkpyyettttlhyylltyttsylnyzwgywgpydqqzzdqnnkcqnmjjzzbxtqfjkdffbtkhzkbxdjjkdjjtlbwf"
+"zpptkqtztgpdwntpjyfalqmkgxbcclzfhzcllllanpnxtjklcclgyhdzfgyddgcyyfgydxkssendhykdndknnaxxhbpbyyhxccga"
+"pfqyjjdmlxcsjzllpcnbsxgjyndybwjspcwjlzkzddtacsbkzdyzypjzqsjnkktknjdjgyepgtlnyqnacdntcyhblgdzhbbydmjr"
+"egkzyheyybjmcdtafzjzhgcjnlghldwxjjkytcyksssmtwcttqzlpbszdtwcxgzagyktywxlnlcpbclloqmmzsslcmbjcsdzkydc"
+"zjgqjdsmcytzqqlnzqzxssbpkdfqmddzzsddtdmfhtdycnaqjqkypbdjyyxtljhdrqxlmhkydhrnlklytwhllrllrcxylbnsrnzz"
+"symqzzhhkyhxksmzsyzgcxfbnbsqlfzxxnnxkxwymsddyqnggqmmyhcdzttfgyyhgsbttybykjdnkyjbelhdypjqnfxfdnkzhqks"
+"byjtzbxhfdsbdaswpawajldyjsfhblcnndnqjtjnchxfjsrfwhzfmdrfjyxwzpdjkzyjympcyznynxfbytfyfwygdbnzzzdnytxz"
+"emmqbsqehxfznbmflzzsrsyqjgsxwzjsprytjsjgskjjgljjynzjjxhgjkymlpyyycxycgqzswhwlyrjlpxslcxmnsmwklcdnkny"
+"npsjszhdzeptxmwywxyysywlxjqcqxzdclaeelmcpjpclwbxsqhfwrtfnjtnqjhjqdxhwlbyccfjlylkyynldxnhycstyywncjtx"
+"ywtrmdrqnwqcmfjdxzmhmayxnwmyzqtxtlmrspwwjhanbxtgzypxyyrrclmpamgkqjszycymyjsnxtplnbappypylxmyzkynldgy"
+"jzcchnlmzhhanqnbgwqtzmxxmllhgdzxnhxhrxycjmffxywcfsbssqlhnndycannmtcjcypnxnytycnnymnmsxndlylysljnlxys"
+"sqmllyzlzjjjkyzzcsfbzxxmstbjgnxnchlsnmcjscyznfzlxbrnnnylmnrtgzqysatswryhyjzmgdhzgzdwybsscskxsyhytsxg"
+"cqgxzzbhyxjscrhmkkbsczjyjymkqhzjfnbhmqhysnjnzybknqmcjgqhwlsnzswxkhljhyybqcbfcdsxdldspfzfskjjzwzxsddx"
+"jseeegjscssygclxxnwwyllymwwwgydkzjggggggsycknjwnjpcxbjjtqtjwdsspjxcxnzxnmelptfsxtllxcljxjjljsxctnswx"
+"lennlyqrwhsycsqnybyaywjejqfwqcqqcjqgxaldbzzyjgkgxbltqyfxjltpydkyqhpmatlcndnkxmtxynhklefxdllegqtymsaw"
+"hzmljtkynxlyjzljeeyybqqffnlyxhdsctgjhxywlkllxqkcctnhjlqmkkzgcyygllljdcgydhzwypysjbzjdzgyzzhywyfqdtyz"
+"szyezklymgjjhtsmqwyzljyywzcsrkqyqltdxwcdrjalwsqzwbdcqyncjnnszjlncdcdtlzzzacqqzzddxyblxcbqjylzllljddz"
+"jgyqyjzyxnyyyexjxksdaznyrdlzyyynjlslldyxjcykywnqcclddnyyynycgczhjxcclgzqjgnwnncqqjysbzzxyjxjnxjfzbsb"
+"dsfnsfpzxhdwztdmpptflzzbzdmyypqjrsdzsqzsqxbdgcpzswdwcsqzgmdhzxmwwfybpngphdmjthzsmmbgzmbzjcfzhfcbbnmq"
+"dfmbcmcjxlgpnjbbxgyhyyjgptzgzmqbqdcgybjxlwnkydpdymgcftpfxyztzxdzxtgkptybbclbjaskytssqyymscxfjhhlslls"
+"jpqjjqaklyldlycctsxmcwfgngbqxllllnyxtyltyxytdpjhnhgnkbyqnfjyyzbyyessessgdyhfhwtcqbsdzjtfdmxhcnjzymqw"
+"srxjdzjqbdqbbsdjgnfbknbxdkqhmkwjjjgdllthzhhyyyyhhsxztyyyccbdbpypzyccztjpzywcbdlfwzcwjdxxhyhlhwczxjtc"
+"nlcdpxnqczczlyxjjcjbhfxwpywxzpcdzzbdccjwjhmlxbqxxbylrddgjrrctttgqdczwmxfytmmzcwjwxyywzzkybzcccttqnhx"
+"nwxxkhkfhtswoccjybcmpzzykbnnzpbthhjdlszddytyfjpxyngfxbyqxzbhxcpxxtnzdnnycnxsxlhkmzxlthdhkghxxsshqyhh"
+"cjyxglhzxcxnhekdtgqxqypkdhentykcnymyyjmkqyyyjxzlthhqtbyqhxbmyhsqckwwyllhcyylnneqxqwmcfbdccmljggxdqkt"
+"lxkknqcdgcjwyjjlyhhqyttnwchhxcxwherzjydjccdbqcdgdnyxzdhcqrxcbhztqcbxwgqwyybxhmbymykdyecmqkyaqyngyzsl"
+"fnkkqgyssqyshngjctxkzycssbkyxhyylstycxqthysmnscpmmgcccccmnztasmgqzjhklosjylswtmqzyqkdzljqqyplzycztcq"
+"qpbbcjzclpkhqcyyxxdtdddsjcxffllchqxmjlwcjcxtspycxndtjshjwhdqqqckxyamylsjhmlalygxcyydmamdqmlmcznnyybz"
+"xkyflmcncmlhxrcjjhsylnmtjggzgywjxsrxcwjgjqhqzdqjdcjjskjkgdzcgjjyjylxzxxcdqhhheslmhlfsbdjsyyshfyssczq"
+"lpbdrfnztzdkykhsccgkwtqzckmsynbcrxqbjyfaxpzzedzcjykbcjwhyjbqzzywnyszptdkzpfpbaztklqnhbbzptpptyzzybhn"
+"ydcpzmmcycqmcjfzzdcmnlfpbplngqjtbttajzpzbbdnjkljqylnbzqhksjznggqstzkcxchpzsnbcgzkddzqanzgjkdrtlzldwj"
+"njzlywtxndjzjhxnatncbgtzcsskmljpjytsnwxcfjwjjtkhtzplbhsnjssyjbhbjyzlstlsbjhdnwqpslmmfbjdwajyzccjtbnn"
+"nzwxxcdslqgdsdpdzgjtqqpsqlyyjzlgyhsdlctcbjtktyczjtqkbsjlgnnzdncsgpynjzjjyyknhrpwszxmtncszzyshbyhyzax"
+"ywkcjtllckjjtjhgcssxyqyczbynnlwqcglzgjgqyqcczssbcrbcskydznxjsqgxssjmecnstjtpbdlthzwxqwqczexnqczgwesg"
+"ssbybstscslccgbfsdqnzlccglllzghzcthcnmjgyzazcmsksstzmmzckbjygqljyjppldxrkzyxccsnhshhdznlzhzjjcddcbcj"
+"xlbfqbczztpqdnnxljcthqzjgylklszzpcjdscqjhjqkdxgpbajynnsmjtzdxlcjyryynhjbngzjkmjxltbsllrzpylssznxjhll"
+"hyllqqzqlsymrcncxsljmlzltzldwdjjllnzggqxppskyggggbfzbdkmwggcxmcgdxjmcjsdycabxjdlnbcddygskydqdxdjjyxh"
+"saqazdzfslqxxjnqzylblxxwxqqzbjzlfbblylwdsljhxjyzjwtdjcyfqzqzzdzsxzzqlzcdzfxhwspynpqzmlpplffxjjnzzyls"
+"jnyqzfpfzgsywjjjhrdjzzxtxxglghtdxcskyswmmtcwybazbjkshfhgcxmhfqhyxxyzftsjyzbxyxpzlchmzmbxhzzssyfdmncw"
+"dabazlxktcshhxkxjjzjsthygxsxyyhhhjwxkzxssbzzwhhhcwtzzzpjxsyxqqjgzyzawllcwxznxgyxyhfmkhydwsqmnjnaycys"
+"pmjkgwcqhylajgmzxhmmcnzhbhxclxdjpltxyjkdyylttxfqzhyxxsjbjnayrsmxyplckdnyhlxrlnllstycyyqygzhhsccsmcct"
+"zcxhyqfpyyrpbflfqnntszlljmhwtcjqyzwtlnmlmdwmbzzsnzrbpdddlqjjbxtcsnzqqygwcsxfwzlxccrszdzmcyggdyqsgtnn"
+"nlsmymmsyhfbjdgyxccpshxczcsbsjyygjmpbwaffyfnxhydxzylremzgzzyndsznlljcsqfnxxkptxzgxjjgbmyyssnbtylbnlh"
+"bfzdcyfbmgqrrmzszxysjtznnydzzcdgnjafjbdknzblczszpsgcycjszlmnrznbzzldlnllysxsqzqlcxzlsgkbrxbrbzcycxzj"
+"zeeyfgklzlnyhgzcgzlfjhgtgwkraajyzkzqtsshjjxdzyznynnzyrzdqqhgjzxsszbtkjbbfrtjxllfqwjgclqtymblpzdxtzag"
+"bdhzzrbgjhwnjtjxlkscfsmwlldcysjtxkzscfwjlbnntzlljzllqblcqmqqcgcdfpbphzczjlpyyghdtgwdxfczqyyyqysrclqz"
+"fklzzzgffcqnwglhjycjjczlqzzyjbjzzbpdcsnnjgxdqnknlznnnnpsntsdyfwwdjzjysxyyczcyhzwbbyhxrylybhkjksfxtjj"
+"mmchhlltnyymsxxyzpdjjycsycwmdjjkqyrhllngpngtlyycljnnnxjyzfnmlrgjjtyzbsyzmsjyjhgfzqmsyxrszcytlrtqzsst"
+"kxgqkgsptgxdnjsgcqcqhmxggztqydjjznlbznxqlhyqgggthqscbyhjhhkyygkggcmjdzllcclxqsftgjslllmlcskctbljszsz"
+"mmnytpzsxqhjcnnqnyexzqzcpshkzzyzxxdfgmwqrllqxrfztlystctmjcsjjthjnxtnrztzfqrhcgllgcnnnnjdnlnnytsjtlny"
+"xsszxcgjzyqpylfhdjsbbdczgjjjqzjqdybssllcmyttmqnbhjqmnygjyeqyqmzgcjkpdcnmyzgqllslnclmholzgdylfzslncnz"
+"lylzcjeshnyllnxnjxlyjyyyxnbcljsswcqqnnyllzldjnllzllbnylnqchxyyqoxccqkyjxxxyklksxeyqhcqkkkkcsnyxxyqxy"
+"gwtjohthxpxxhsnlcykychzzcbwqbbwjqcscszsslcylgddsjzmmymcytsdsxxscjpqqsqylyfzychdjynywcbtjsydchcyddjlb"
+"djjsodzyqyskkyxdhhgqjyohdyxwgmmmazdybbbppbcmnnpnjzsmtxerxjmhqdntpjdcbsnmssythjtslmltrcplzszmlqdsdmjm"
+"qpnqdxcfrnnfsdqqyxhyaykqyddlqyyysszbydslntfgtzqbzmchdhczcwfdxtmqqsphqwwxsrgjcwnntzcqmgwqjrjhtqjbbgwz"
+"fxjhnqfxxqywyyhyscdydhhqmrmtmwctbszppzzglmzfollcfwhmmsjzttdhlmyffytzzgzyskjjxqyjzqbhmbzclyghgfmshpcf"
+"zsnclpbqsnjyzslxxfpmtyjygbxlldlxpzjyzjyhhzcywhjylsjexfszzywxkzjlnadymlymqjpwxxhxsktqjezrpxxzghmhwqpw"
+"qlyjjqjjzszcnhjlchhnxjlqwzjhbmzyxbdhhypylhlhlgfwlcfyytlhjjcwmscpxstkpnhjxsntyxxtestjctlsslstdlllwwyh"
+"dnrjzsfgxssyczykwhtdhwjglhtzdqdjzxxqgghltzphcsqfclnjtclzpfstpdynylgmjllycqhynspchylhqyqtmzymbywrfqyk"
+"jsyslzdnjmpxyyssrhzjnyqtqdfzbwwdwwrxcwggyhxmkmyyyhmxmzhnksepmlqqmtcwctmxmxjpjjhfxyyzsjzhtybmstsyjznq"
+"jnytlhynbyqclcycnzwsmylknjxlggnnpjgtysylymzskttwlgsmzsylmpwlcwxwqcssyzsyxyrhssntsrwpccpwcmhdhhxzdzyf"
+"jhgzttsbjhgyglzysmyclllxbtyxhbbzjkssdmalhhycfygmqypjyjqxjllljgclzgqlycjcctotyxmtmshllwlqfxymzmklpszz"
+"cxhkjyclctyjcyhxsgyxnnxlzwpyjpxhjwpjpwxqqxlxsdhmrslzzydwdtcxknstzshbsccstplwsscjchjlcgchssphylhfhhxj"
+"sxallnylmzdhzxylsxlmzykcldyahlcmddyspjtqjzlngjfsjshctsdszlblmssmnyymjqbjhrzwtyydchjljapzwbgqxbkfnbjd"
+"llllyylsjydwhxpsbcmljpscgbhxlqhyrljxyswxhhzlldfhlnnymjljyflyjycdrjlfsyzfsllcqyqfgqyhnszlylmdtdjcnhbz"
+"llnwlqxygyyhbmgdhxxnhlzzjzxczzzcyqzfngwpylcpkpykpmclgkdgxzgxwqbdxzzkzfbddlzxjtpjpttbythzzdwslcpnhslt"
+"jxxqlhyxxxywzyswttzkhlxzxzpyhgzhknfsyhntjrnxfjcpjztwhplshfcrhnslxxjxxyhzqdxqwnnhyhmjdbflkhcxcwhjfyjc"
+"fpqcxqxzyyyjygrpynscsnnnnchkzdyhflxxhjjbyzwttxnncyjjymswyxqrmhxzwfqsylznggbhyxnnbwttcsybhxxwxyhhxyxn"
+"knyxmlywrnnqlxbbcljsylfsytjzyhyzawlhorjmnsczjxxxyxchcyqryxqzddsjfslyltsffyxlmtyjmnnyyyxltzcsxqclhzxl"
+"wyxzhnnlrxkxjcdyhlbrlmbrdlaxksnlljlyxxlynrylcjtgncmtlzllcyzlpzpzyawnjjfybdyyzsepckzzqdqpbpsjpdyttbdb"
+"bbyndycncpjmtmlrmfmmrwyfbsjgygsmdqqqztxmkqwgxllpjgzbqrdjjjfpkjkcxbljmswldtsjxldlppbxcwkcqqbfqbccajzg"
+"mykbhyhhzykndqzybpjnspxthlfpnsygyjdbgxnhhjhzjhstrstldxskzysybmxjlxyslbzyslzxjhfybqnbylljqkygzmcyzzym"
+"ccslnlhzhwfwyxzmwyxtynxjhbyymcysbmhysmydyshnyzchmjjmzcaahcbjbbhblytylsxsnxgjdhkxxtxxnbhnmlngsltxmrhn"
+"lxqqxmzllyswqgdlbjhdcgjyqyymhwfmjybbbyjyjwjmdpwhxqldyapdfxxbcgjspckrssyzjmslbzzjfljjjlgxzgyxyxlszqkx"
+"bexyxhgcxbpndyhwectwwcjmbtxchxyqqllxflyxlljlssnwdbzcmyjclwswdczpchqekcqbwlcgydblqppqzqfnqdjhymmcxtxd"
+"rmzwrhxcjzylqxdyynhyyhrslnrsywwjjymtltllgtqcjzyabtckzcjyccqlysqxalmzynywlwdnzxqdllqshgpjfjljnjabcqzd"
+"jgthhsstnyjfbswzlxjxrhgldlzrlzqzgsllllzlymxxgdzhgbdphzpbrlwnjqbpfdwonnnhlypcnjccndmbcpbzzncyqxldomzb"
+"lzwpdwyygdstthcsqsccrsssyslfybnntyjszdfndpdhtqzmbqlxlcmyffgtjjqwftmnpjwdnlbzcmmcngbdzlqlpnfhyymjylsd"
+"chdcjwjcctljcldtljjcbddpndsszycndbjlggjzxsxnlycybjjxxcbylzcfzppgkcxqdzfztjjfjdjxzbnzyjqctyjwhdyczhym"
+"djxttmpxsplzcdwslshxypzgtfmlcjtacbbmgdewycyzxdszjyhflystygwhkjyylsjcxgywjcbllcsnddbtzbsclyzczzssqdll"
+"mjyyhfllqllxfdyhabxggnywyypllsdldllbjcyxjznlhljdxyyqytdlllbngpfdfbbqbzzmdpjhgclgmjjpgaehhbwcqxajhhhz"
+"chxyphjaxhlphjpgpzjqcqzgjjzzgzdmqyybzzphyhybwhazyjhykfgdpfqsdlzmljxjpgalxzdaglmdgxmmzqwtxdxxpfdmmssy"
+"mpfmdmmkxksyzyshdzkjsysmmzzzmdydyzzczxbmlstmdyemxckjmztyymzmzzmsshhdccjewxxkljsthwlsqlyjzllsjssdppmh"
+"nlgjczyhmxxhgncjmdhxtkgrmxfwmckmwkdcksxqmmmszzydkmsclcmpcjmhrpxqpzdsslcxkyxtwlkjyahzjgzjwcjnxyhmmbml"
+"gjxmhlmlgmxctkzmjlyscjsyszhsyjzjcdajzhbsdqjzgwtkqxfkdmsdjlfmnhkzqkjfeypzyszcdpynffmzqykttdzzefmzlbnp"
+"plplpbpszalltnlkckqzkgenjlwalkxydpxnhsxqnwqnkxqclhyxxmlnccwlymqyckynnlcjnszkpyzkcqzqljbdmdjhlasqlbyd"
+"wqlwdgbqcryddztjybkbwszdxdtnpjdtcnqnfxqqmgnseclstbhpwslctxxlpwydzklnqgzcqapllkqcylbqmqczqcnjslqzdjxl"
+"ddhpzqdljjxzqdjyzhhzlkcjqdwjppypqakjyrmpzbnmcxkllzllfqpylllmbsglzysslrsysqtmxyxzqzbscnysyztffmzzsmzq"
+"hzssccmlyxwtpzgxzjgzgsjzgkddhtqggzllbjdzlsbzhyxyzhzfywxytymsdnzzyjgtcmtnxqyxjscxhslnndlrytzlryylxqht"
+"xsrtzcgyxbnqqzfhykmzjbzymkbpnlyzpblmcnqyzzzsjztjctzhhyzzjrdyzhnfxklfzslkgjtctssyllgzrzbbjzzklpkbczys"
+"nnyxbjfbnjzzxcdwlzyjxzzdjjgggrsnjkmsmzjlsjywqsnyhqjsxpjztnlsnshrnynjtwchglbnrjlzxwjqxqkysjycztlqzybb"
+"ybyzjqdwgyzcytjcjxckcwdkkzxsnkdnywwyyjqyytlytdjlxwkcjnklccpzcqqdzzqlcsfqchqqgssmjzzllbjjzysjhtsjdysj"
+"qjpdszcdchjkjzzlpycgmzndjxbsjzzsyzyhgxcpbjydssxdzncglqmbtsfcbfdzdlznfgfjgfsmpnjqlnblgqcyyxbqgdjjqsrf"
+"kztjdhczklbsdzcfytplljgjhtxzcsszzxstjygkgckgynqxjplzbbbgcgyjzgczqszlbjlsjfzgkqqjcgycjbzqtldxrjnbsxxp"
+"zshszycfwdsjjhxmfczpfzhqhqmqnknlyhtycgfrzgnqxcgpdlbzcsczqlljblhbdcypscppdymzzxgyhckcpzjgslzlnscnsldl"
+"xbmsdlddfjmkdqdhslzxlsznpqpgjdlybdskgqlbzlnlkyyhzttmcjnqtzzfszqktlljtyyllnllqyzqlbdzlslyyzxmdfszsnxl"
+"xznczqnbbwskrfbcylctnblgjpmczzlstlxshtzcyzlzbnfmqnlxflcjlyljqcbclzjgnsstbrmhxzhjzclxfnbgxgtqncztmsfz"
+"kjmssncljkbhszjntnlzdntlmmjxgzjyjczxyhyhwrwwqnztnfjscpyshzjfyrdjsfscjzbjfzqzchzlxfxsbzqlzsgyftzdcszx"
+"zjbjpszkjrhxjzcgbjkhcggtxkjqglxbxfgtrtylxqxhdtsjxhjzjjcmzlcqsbtxwqgxtxxhxftsdkfjhzyjfjxnzldlllcqsqqz"
+"qwqxswqtwgwbzcgcllqzbclmqjtzgzyzxljfrmyzflxnsnxxjkxrmjdzdmmyxbsqbhgzmwfwygmjlzbyytgzyccdjyzxsngnyjyz"
+"nbgpzjcqsyxsxrtfyzgrhztxszzthcbfclsyxzlzqmzlmplmxzjssfsbysmzqhxxnxrxhqzzzsslyflczjrcrxhhzxqndshxsjjh"
+"qcjjbcynsysxjbqjpxzqplmlxzkyxlxcnlcycxxzzlxdlllmjyhzxhyjwkjrwyhcpsgnrzlfzwfzznsxgxflzsxzzzbfcsyjdbrj"
+"krdhhjxjljjtgxjxxstjtjxlyxqfcsgswmsbctlqzzwlzzkxjmltmjyhsddbxgzhdlbmyjfrzfcgclyjbpmlysmsxlszjqqhjzfx"
+"gfqfqbphngyyqxgztnqwyltlgwgwwhnlfmfgzjmgmgbgtjflyzzgzyzaflsspmlbflcwbjztljjmzlpjjlymqtmyyyfbgygqzgly"
+"zdxqyxrqqqhsxyyqxygjtyxfsfsllgnqcygycwfhcccfxpylypllzqxxxxxqqhhsshjzcftsczjxspzwhhhhhapylqnlpqafyhxd"
+"ylnkmzqgggddesrenzltzgchyppcsqjjhclljtolnjpzljlhymhezdydsqycddhgznndzclzywllznteydgnlhslpjjbdgwxpcnn"
+"tycklkclwkllcasstknzdnnjttlyyzssysszzryljqkcgdhhyrxrzydgrgcwcgzqffbppjfzynakrgywyjpqxxfkjtszzxswzddf"
+"bbqtbgtzkznpzfpzxzpjszbmqhkyyxyldkljnypkyghgdzjxxeaxpnznctzcmxcxmmjxnkszqnmnlwbwwqjjyhclstmcsxnjcxxt"
+"pcnfdtnnpglllzcjlspblpgjcdtnjjlyarscffjfqwdpgzdwmrzzcgodaxnssnyzrestyjwjyjdbcfxnmwttbqlwstszgybljpxg"
+"lbnclgpcbjftmxzljylzxcltpnclcgxtfzjshcrxsfysgdkntlbyjcyjllstgqcbxnhzxbxklylhzlqzlnzcqwgzlgzjncjgcmnz"
+"zgjdzxtzjxycyycxxjyyxjjxsssjstsstdppghtcsxwzdcsynptfbchfbblzjclzzdbxgcjlhpxnfzflsyltnwbmnjhszbmdnbcy"
+"sccldnycndqlyjjhmqllcsgljjsyfpyyccyltjantjjpwycmmgqyysxdxqmzhszxbftwwzqswqrfkjlzjqqyfbrxjhhfwjgzyqac"
+"myfrhcyybynwlpexcczsyyrlttdmqlrkmpbgmyyjprkznbbsqyxbhyzdjdnghpmfsgbwfzmfqmmbzmzdcgjlnnnxyqgmlrygqccy"
+"xzlwdkcjcggmcjjfyzzjhycfrrcmtznzxhkqgdjxccjeascrjthpljlrzdjrbcqhjdnrhylyqjsymhzydwcdfryhbbydtssccwbx"
+"glpzmlzjdqsscfjmmxjcxjytycghycjwynsxlfemwjnmkllswtxhyyyncmmcyjdqdjzglljwjnkhpzggflccsczmcbltbhbqjxqd"
+"jpdjztghglfjawbzyzjltstdhjhctcbchflqmpwdshyytqwcnntjtlnnmnndyyyxsqkxwyyflxxnzwcxypmaelyhgjwzzjbrxxaq"
+"jfllpfhhhytzzxsgqjmhspgdzqwbwpjhzjdyjcqwxkthxsqlzyymysdzgnqckknjlwpnsyscsyzlnmhqsyljxbcxtlhzqzpcycyk"
+"pppnsxfyzjjrcemhszmnxlxglrwgcstlrsxbygbzgnxcnlnjlclynymdxwtzpalcxpqjcjwtcyyjlblxbzlqmyljbghdslssdmxm"
+"bdczsxyhamlczcpjmcnhjyjnsykchskqmczqdllkablwjqsfmocdxjrrlyqchjmybyqlrhetfjzfrfksryxfjdwtsxxywsqjysly"
+"xwjhsdlxyyxhbhawhwjcxlmyljcsqlkydttxbzslfdxgxsjkhsxxybssxdpwncmrptqzczenygcxqfjxkjbdmljzmqqxnoxslyxx"
+"lylljdzptymhbfsttqqwlhsgynlzzalzxclhtwrrqhlstmypyxjjxmnsjnnbryxyjllyqyltwylqyfmlkljdnlltfzwkzhljmlhl"
+"jnljnnlqxylmbhhlnlzxqchxcfxxlhyhjjgbyzzkbxscqdjqdsndzsygzhhmgsxcsymxfepcqwwrbpyyjqryqcyjhqqzyhmwffhg"
+"zfrjfcdbxntqyzpcyhhjlfrzgpbxzdbbgrqstlgdgylcqmgchhmfywlzyxkjlypjhsywmqqggzmnzjnsqxlqsyjtcbehsxfszfxz"
+"wfllbcyyjdytdthwzsfjmqqyjlmqsxlldttkghybfpwdyysqqrnqwlgwdebzwcyygcnlkjxtmxmyjsxhybrwfymwfrxyymxysctz"
+"ztfykmldhqdlgyjnlcryjtlpsxxxywlsbrrjwxhqybhtydnhhxmmywytycnnmnssccdalwztcpqpyjllqzyjswjwzzmmglmxclmx"
+"nzmxmzsqtzppjqblpgxjzhfljjhycjsrxwcxsncdlxsyjdcqzxslqyclzxlzzxmxqrjmhrhzjbhmfljlmlclqnldxzlllfyprgjy"
+"nxcqqdcmqjzzxhnpnxzmemmsxykynlxsxtljxyhwdcwdzhqyybgybcyscfgfsjnzdrzzxqxrzrqjjymcanhrjtldbpyzbstjhxxz"
+"ypbdwfgzzrpymnnkxcqbyxnbnfyckrjjcmjegrzgyclnnzdnkknsjkcljspgyyclqqjybzssqlllkjftbgtylcccdblsppfylgyd"
+"tzjqjzgkntsfcxbdkdxxhybbfytyhbclnnytgdhryrnjsbtcsnyjqhklllzslydxxwbcjqsbxnpjzjzjdzfbxxbrmladhcsnclbj"
+"dstblprznswsbxbcllxxlzdnzsjpynyxxyftnnfbhjjjgbygjpmmmmsszljmtlyzjxswxtyledqpjmpgqzjgdjlqjwjqllsdgjgy"
+"gmscljjxdtygjqjjjcjzcjgdzdshqgzjggcjhqxsnjlzzbxhsgzxcxyljxyxyydfqqjhjfxdhctxjyrxysqtjxyefyyssyxjxncy"
+"zxfxcsxszxyyschshxzzzgzzzgfjdldylnpzgsjaztyqzpbxcbdztzczyxxyhhscjshcggqhjhgxhsctmzmehyxgebtclzkkwytj"
+"zrslekestdbcyhqqsayxcjxwwgsphjszsdncsjkqcxswxfctynydpccczjqtcwjqjzzzqzljzhlsbhpydxpsxshhezdxfptjqyzc"
+"xhyaxncfzyyhxgnqmywntzsjbnhhgymxmxqcnssbcqsjyxxtyyhybcqlmmszmjzzllcogxzaajzyhjmchhcxzsxsdznleyjjzjbh"
+"zwjzsqtzpsxzzdsqjjjlnyazphhyysrnqzthzhnyjyjhdzxzlswclybzyecwcycrylchzhzydzydyjdfrjjhtrsqtxyxjrjhojyn"
+"xelxsfsfjzghpzsxzszdzcqzbyyklsgsjhczshdgqgxyzgxchxzjwyqwgyhksseqzzndzfkwyssdclzstsymcdhjxxyweyxczayd"
+"mpxmdsxybsqmjmzjmtjqlpjyqzcgqhyjhhhqxhlhdldjqcfdwbsxfzzyyschtytyjbhecxhjkgqfxbhyzjfxhwhbdzfyzbchpnpg"
+"dydmsxhkhhmamlnbyjtmpxejmcthqbzyfcgtyhwphftgzzezsbzegpbmdskftycmhbllhgpzjxzjgzjyxzsbbqsczzlzscstpgxm"
+"jsfdcczjzdjxsybzlfcjsazfgszlwbczzzbyztzynswyjgxzbdsynxlgzbzfygczxbzhzftpbgzgejbstgkdmfhyzzjhzllzzgjq"
+"zlsfdjsscbzgpdlfzfzszyzyzsygcxsnxxchczxtzzljfzgqsqqxcjqccccdjcdszzyqjccgxztdlgscxzsyjjqtcclqdqztqchq"
+"qyzynzzzpbkhdjfcjfztypqyqttynlmbdktjcpqzjdzfpjsbnjlgyjdxjdcqkzgqkxclbzjtcjdqbxdjjjstcxnxbxqmslyjcxnt"
+"jqwwcjjnjjlllhjcwqtbzqqczczpzzdzyddcyzdzccjgtjfzdprntctjdcxtqzdtjnplzbcllctdsxkjzqdmzlbznbtjdcxfczdb"
+"czjjltqqpldckztbbzjcqdcjwynllzlzccdwllxwzlxrxntqjczxkjlsgdnqtddglnlajjtnnynkqlldzntdnycygjwyxdxfrsqs"
+"tcdenqmrrqzhhqhdldazfkapbggpzrebzzykyqspeqjjglkqzzzjlysyhyzwfqznlzzlzhwcgkypqgnpgblplrrjyxcccgyhsfzf"
+"wbzywtgzxyljczwhncjzplfflgskhyjdeyxhlpllllcygxdrzelrhgklzzyhzlyqszzjzqljzflnbhgwlczcfjwspyxzlzlxgccp"
+"zbllcxbbbbnbbcbbcrnnzccnrbbnnldcgqyyqxygmqzwnzytyjhyfwtehznjywlccntzyjjcdedpwdztstnjhtymbjnyjzlxtsst"
+"phndjxxbyxqtzqddtjtdyztgwscszqflshlnzbcjbhdlyzjyckwtydylbnydsdsycctyszyyebgexhqddwnygyclxtdcystqnygz"
+"ascsszzdzlcclzrqxyywljsbymxshzdembbllyyllytdqyshymrqnkfkbfxnnsbychxbwjyhtqbpbsbwdzylkgzskyghqzjxhxjx"
+"gnljkzlyycdxlfwfghljgjybxblybxqpqgntzplncybxdjyqydymrbeyjyyhkxxstmxrczzjwxyhybmcflyzhqyzfwxdbxbcwzms"
+"lpdmyckfmzklzcyqycclhxfzlydqzpzygyjyzmdxtzfnnyttqtzhgsfcdmlccytzxjcytjmkslpzhysnwllytpzctzccktxdhxxt"
+"qcyfksmqccyyazhtjplylzlyjbjxtfnyljyynrxcylmmnxjsmybcsysslzylljjgyldzdlqhfzzblfndsqkczfyhhgqmjdsxyctt"
+"xnqnjpyybfcjtyyfbnxejdgyqbjrcnfyyqpghyjsyzngrhtknlnndzntsmgklbygbpyszbydjzsstjztsxzbhbscsbzczptqfzlq"
+"flypybbjgszmnxdjmtsyskkbjtxhjcegbsmjyjzcstmljyxrczqscxxqpyzhmkyxxxjcljyrmyygadyskqlnadhrskqxzxztcggz"
+"dlmlwxybwsyctbhjhcfcwzsxwwtgzlxqshnyczjxemplsrcgltnzntlzjcyjgdtclglbllqpjmzpapxyzlaktkdwczzbncctdqqz"
+"qyjgmcdxltgcszlmlhbglkznnwzndxnhlnmkydlgxdtwcfrjerctzhydxykxhwfzcqshknmqqhzhhymjdjskhxzjzbzzxympajnm"
+"ctbxlsxlzynwrtsqgscbptbsgzwyhtlkssswhzzlyytnxjgmjrnsnnnnlskztxgxlsammlbwldqhylakqcqctmycfjbslxclzjcl"
+"xxknbnnzlhjphqplsxsckslnhpsfqcytxjjzljldtzjjzdlydjntptnndskjfsljhylzqqzlbthydgdjfdbyadxdzhzjnthqbykn"
+"xjjqczmlljzkspldsclbblnnlelxjlbjycxjxgcnlcqplzlznjtsljgyzdzpltqcssfdmnycxgbtjdcznbgbqyqjwgkfhtnbyqzq"
+"gbkpbbyzmtjdytblsqmbsxtbnpdxklemyycjynzdtldykzzxtdxhqshygmzsjycctayrzlpwltlkxslzcggexclfxlkjrtlqjaqz"
+"ncmbqdkkcxglczjzxjhptdjjmzqykqsecqzdshhadmlzfmmzbgntjnnlhbyjbrbtmlbyjdzxlcjlpldlpcqdhlhzlycblcxccjad"
+"qlmzmmsshmybhbnkkbhrsxxjmxmdznnpklbbrhgghfchgmnklltsyyycqlcskymyehywxnxqywbawykqldnntndkhqcgdqktgpkx"
+"hcpdhtwnmssyhbwcrwxhjmkmzngwtmlkfghkjyldyycxwhyyclqhkqhtdqkhffldxqwytyydesbpkyrzpjfyyzjceqdzzdlattpb"
+"fjllcxdlmjsdxegwgsjqxcfbssszpdyzcxznyxppzydlyjccpltxlnxyzyrscyyytylwwndsahjsygyhgywwaxtjzdaxysrltdps"
+"syxfnejdxyzhlxlllzhzsjnyqyqyxyjghzgjcyjchzlycdshhsgczyjscllnxzjjyyxnfsmwfpyllyllabmddhwzxjmcxztzpmlq"
+"chsfwzynctlndywlslxhymmylmbwwkyxyaddxylldjpybpwnxjmmmllhafdllaflbnhhbqqjqzjcqjjdjtffkmmmpythygdrjrdd"
+"wrqjxnbysrmzdbyytbjhpymyjtjxaahggdqtmystqxkbtzbkjlxrbyqqhxmjjbdjntgtbxpgbktlgqxjjjcdhxqdwjlwrfmjgwqh"
+"cnrxswgbtgygbwhswdwrfhwytjjxxxjyzyslphyypyyxhydqpxshxyxgskqhywbdddpplcjlhqeewjgsyykdpplfjthkjltcyjhh"
+"jttpltzzcdlyhqkcjqysteeyhkyzyxxyysddjkllpymqyhqgxqhzrhbxpllnqydqhxsxxwgdqbshyllpjjjthyjkyphthyyktyez"
+"yenmdshlzrpqfbnfxzbsftlgxsjbswyysksflxlpplbbblnsfbfyzbsjssylpbbffffsscjdstjsxtryjcyffsyzyzbjtlctsbsd"
+"hrtjjbytcxyyeylycbnebjdsysyhgsjzbxbytfzwgenhhhthjhhxfwgcstbgxklstyymtmbyxjskzscdyjrcythxzfhmymcxlzns"
+"djtxtxrycfyjsbsdyerxhljxbbdeynjghxgckgscymblxjmsznskgxfbnbbthfjyafxwxfbxmyfhdttcxzzpxrsywzdlybbktyqw"
+"qjbzypzjznjpzjlztfysbttslmptzrtdxqsjehbnylndxljsqmlhtxtjecxalzzspktlzkqqyfsyjywpcpqfhjhytqxzkrsgtksq"
+"czlptxcdyyzsslzslxlzmacpcqbzyxhbsxlzdltztjtylzjyytbzypltxjsjxhlbmytxcqrblzssfjzztnjytxmyjhlhpblcyxqj"
+"qqkzzscpzkswalqsplczzjsxgwwwygyatjbbctdkhqhkgtgpbkqyslbxbbckbmllndzstbklggqkqlzbkktfxrmdkbftpzfrtppm"
+"ferqnxgjpzsstlbztpszqzsjdhljqlzbpmsmmsxlqqnhknblrddnhxdkddjcyyljfqgzlgsygmjqjkhbpmxyxlytqwlwjcpbmjxc"
+"yzydrjbhtdjyeqshtmgsfyplwhlzffnynnhxqhpltbqpfbjwjdbygpnxtbfzjgnnntjshxeawtzylltyqbwjpgxghnnkndjtmszs"
+"qynzggnwqtfhclssgmnnnnynzqqxncjdqgzdlfnykljcjllzlmzznnnnsshthxjlzjbbhqjwwycrdhlyqqjbeyfsjhthnrnwjhwp"
+"slmssgzttygrqqwrnlalhmjtqjsmxqbjjzjqzyzkxbjqxbjxshzssfglxmxnxfghkzszggslcnnarjxhnlllmzxelglxydjytlfb"
+"kbpnlyzfbbhptgjkwetzhkjjxzxxglljlstgshjjyqlqzfkcgnndjsszfdbctwwseqfhqjbsaqtgypjlbxbmmywxgslzhglsgnyf"
+"ljbyfdjfngsfmbyzhqffwjsyfyjjphzbyyzffwotjnlmftwlbzgyzqxcdjygzyyryzynyzwegazyhjjlzrthlrmgrjxzclnnnljj"
+"yhtbwjybxxbxjjtjteekhwslnnlbsfazpqqbdlqjjtyyqlyzkdksqjnejzldqcgjqnnjsncmrfqthtejmfctyhypymhydmjncfgy"
+"yxwshctxrljgjzhzcyyyjltkttntmjlzclzzayyoczlrlbszywjytsjyhbyshfjlykjxxtmzyyltxxypslqyjzyzyypnhmymdyyl"
+"blhlsyygqllnjjymsoycbzgdlyxylcqyxtszegxhzglhwbljheyxtwqmakbpqcgyshhegqcmwyywljyjhyyzlljjylhzyhmgsljl"
+"jxcjjyclycjbcpzjzjmmwlcjlnqljjjlxyjmlszljqlycmmgcfmmfpqqmfxlqmcffqmmmmhnznfhhjgtthxkhslnchhyqzxtmmqd"
+"cydyxyqmyqylddcyaytazdcymdydlzfffmmycqcwzzmabtbyctdmndzggdftypcgqyttssffwbdttqssystwnjhjytsxxylbyyhh"
+"whxgzxwznnqzjzjjqjccchykxbzszcnjtllcqxynjnckycynccqnxyewyczdcjycchyjlbtzyycqwlpgpyllgktltlgkgqbgychj"
+"xy";
+
+char pinyinFirstLetter(unsigned short hanzi)
+{
+    int index = hanzi - HANZI_START;
+    if (index >= 0 && index <= HANZI_COUNT)
+    {
+        return firstLetterArray[index];
+    }
+    else
+    {
+        return '[';
+    }
+}
+
+
 
 
 @implementation NSString (Common)
 
 
-- (NSString *)URLEncoding
++ (NSString *)md5String:(NSString *)str;
 {
-    NSString * result = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes( kCFAllocatorDefault,
-                                                                                              (CFStringRef)self,
-                                                                                              NULL,
-                                                                                              (CFStringRef)@"!*'();:@&=+$,/?%#[]",
-                                                                                              kCFStringEncodingUTF8 ));
-    return result;
-}
-- (NSString *)URLDecoding
-{
-    NSMutableString * string = [NSMutableString stringWithString:self];
-    [string replaceOccurrencesOfString:@"+"
-                            withString:@" "
-                               options:NSLiteralSearch
-                                 range:NSMakeRange(0, [string length])];
-    return [string stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-}
-
-
-- (NSString *)md5Str
-{
-    const char *cStr = [self UTF8String];
-    unsigned char result[16];
-    CC_MD5(cStr, (CC_LONG)strlen(cStr), result); // This is the md5 call
+    const char *cStr = [str UTF8String];
+    unsigned char result[CC_MD5_DIGEST_LENGTH];
+    CC_MD5(cStr, (uint32_t)strlen(cStr), result);
     return [NSString stringWithFormat:
             @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-            result[0], result[1], result[2], result[3],
-            result[4], result[5], result[6], result[7],
-            result[8], result[9], result[10], result[11],
-            result[12], result[13], result[14], result[15]
-            ]; 
+            result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7],
+            result[8], result[9], result[10], result[11], result[12], result[13], result[14], result[15]
+            ];
+    
 }
 
-- (NSString*) sha1Str
+- (NSString *)md5
 {
-    const char *cstr = [self cStringUsingEncoding:NSUTF8StringEncoding];
-    NSData *data = [NSData dataWithBytes:cstr length:self.length];
-    
-    uint8_t digest[CC_SHA1_DIGEST_LENGTH];
-    
-    CC_SHA1(data.bytes, (CC_LONG)data.length, digest);
-    
-    NSMutableString* output = [NSMutableString stringWithCapacity:CC_SHA1_DIGEST_LENGTH * 2];
-    
-    for(int i = 0; i < CC_SHA1_DIGEST_LENGTH; i++)
-        [output appendFormat:@"%02x", digest[i]];
-    
-    return output;
+    return [NSString md5String:self];
 }
 
-//- (NSURL *)urlWithCodePath{
-//    NSString *urlStr;
-//    if (!self || self.length <= 0) {
-//        return nil;
-//    }else{
-//        if (![self hasPrefix:@"http"]) {
-//            urlStr = [NSString stringWithFormat:@"%@%@", [NSObject baseURLStr], self];
-//        }else{
-//            urlStr = self;
-//        }
-//        return [NSURL URLWithString:urlStr];
-//    }
-//}
-//- (NSURL *)urlImageWithCodePathResize:(CGFloat)width{
-//    return [self urlImageWithCodePathResize:width crop:NO];
-//}
-//- (NSURL *)urlImageWithCodePathResize:(CGFloat)width crop:(BOOL)needCrop{
-//    NSString *urlStr;
-//    BOOL canCrop = NO;
-//    if (!self || self.length <= 0) {
-//        return nil;
-//    }else{
-//        if (![self hasPrefix:@"http"]) {
-//            NSString *imageName = [self stringByMatching:@"/static/fruit_avatar/([a-zA-Z0-9\\-._]+)$" capture:1];
-//            if (imageName && imageName.length > 0) {
-//                urlStr = [NSString stringWithFormat:@"http://coding-net-avatar.qiniudn.com/%@?imageMogr2/auto-orient/thumbnail/!%.0fx%.0fr", imageName, width, width];
-//                canCrop = YES;
-//            }else{
-//                urlStr = [NSString stringWithFormat:@"%@%@", [NSObject baseURLStr], self];
-//            }
-//        }else{
-//            urlStr = self;
-//            if ([urlStr rangeOfString:@"qbox.me"].location != NSNotFound) {
-//                if ([urlStr rangeOfString:@".gif"].location != NSNotFound) {
-//                    if ([urlStr rangeOfString:@"?"].location != NSNotFound) {
-//                        urlStr = [urlStr stringByAppendingString:[NSString stringWithFormat:@"/thumbnail/!%.0fx%.0fr/format/png", width, width]];
-//                    }else{
-//                        urlStr = [urlStr stringByAppendingString:[NSString stringWithFormat:@"?imageMogr2/auto-orient/thumbnail/!%.0fx%.0fr/format/png", width, width]];
-//                    }
-//                }else{
-//                    if ([urlStr rangeOfString:@"?"].location != NSNotFound) {
-//                        urlStr = [urlStr stringByAppendingString:[NSString stringWithFormat:@"/thumbnail/!%.0fx%.0fr", width, width]];
-//                    }else{
-//                        urlStr = [urlStr stringByAppendingString:[NSString stringWithFormat:@"?imageMogr2/auto-orient/thumbnail/!%.0fx%.0fr", width, width]];
-//                    }
-//                }
-//                canCrop = YES;
-//            }else if ([urlStr rangeOfString:@"www.gravatar.com"].location != NSNotFound){
-//                urlStr = [urlStr stringByReplacingOccurrencesOfString:@"s=[0-9]*" withString:[NSString stringWithFormat:@"s=%.0f", width] options:NSRegularExpressionSearch range:NSMakeRange(0, [urlStr length])];
-//            }else if ([urlStr hasSuffix:@"/imagePreview"]){
-//                urlStr = [urlStr stringByAppendingFormat:@"?width=%.0f", width];
-//            }
-//        }
-//        if (needCrop && canCrop) {
-//            urlStr = [urlStr stringByAppendingFormat:@"/gravity/Center/crop/%.0fx%.0f", width, width];
-//        }
-//        return [NSURL URLWithString:urlStr];
-//    }
-//}
-//- (NSURL *)urlImageWithCodePathResizeToView:(UIView *)view{
-//    return [self urlImageWithCodePathResize:2*CGRectGetWidth(view.frame)];
-//}
-//- (NSString *)stringByRemoveHtmlTag{
-//    HtmlMedia *media = [HtmlMedia htmlMediaWithString:self showType:MediaShowTypeImageAndMonkey];
-//    return media.contentDisplay;
-//}
-+ (NSString *)handelRef:(NSString *)ref path:(NSString *)path{
-    if (ref.length <= 0 && path.length <= 0) {
+-(NSString*)firstPinYin
+{
+    if ([self length] == 0) {
+        return [NSString stringWithFormat:@"%c",'['];
+    }
+    
+    if ([self canBeConvertedToEncoding:NSASCIIStringEncoding]) {//it is english words
+        return [self substringToIndex:1];
+    }
+    
+    unichar ch = [self characterAtIndex:0];
+    char firstPinYin = ch;
+    if (ch < 'A' || ch > 'z' || (ch > 'Z' && ch < 'a') ) {
+        firstPinYin = pinyinFirstLetter(ch);
+    }
+    
+    return [NSString stringWithFormat:@"%c",firstPinYin];
+}
+
+
+#pragma mark - Utils
++ (BOOL)isEmpty:(NSString *)string
+{
+    return string == nil || string.length == 0;
+}
+
+- (BOOL)isWhitespaceAndNewlines
+{
+    NSCharacterSet* whitespace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    for (NSInteger i = 0; i < self.length; ++i)
+    {
+        unichar c = [self characterAtIndex:i];
+        if (![whitespace characterIsMember:c])
+        {
+            return NO;
+        }
+    }
+    return YES;
+}
+
+- (NSString *)trim
+{
+    return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
+- (NSString *)removeWhiteSpace
+{
+    return [[self componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] componentsJoinedByString:@""];
+}
+
+- (NSString *)removeNewLine
+{
+    return [[self componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]] componentsJoinedByString:@""];
+}
+
+- (NSString *)stringByUrlEncoding
+{
+    NSString *url = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,  (CFStringRef)self,  NULL,  (CFStringRef)@"!*'();:@&=+$,/?%#[]",  kCFStringEncodingUTF8));
+    
+    return CommonReturnAutoReleased(url);
+}
+
+- (NSString *)capitalize
+{
+    if (self == nil || [self length] == 0) return self;
+    return [[self substringToIndex:1].uppercaseString stringByAppendingString:[self substringFromIndex:1]];
+}
+
+- (BOOL)startsWith:(NSString *)str
+{
+    return [self startsWith:str Options:NSCaseInsensitiveSearch];
+}
+
+- (BOOL)startsWith:(NSString *)str Options:(NSStringCompareOptions)compareOptions
+{
+    return (str != nil) && ([str length] > 0) && ([self length] >= [str length])
+    && ([self rangeOfString:str options:compareOptions].location == 0);
+}
+
+- (BOOL)endsWith:(NSString *)str
+{
+    return [self endsWith:str Options:NSCaseInsensitiveSearch];
+}
+
+- (BOOL)endsWith:(NSString *)str Options:(NSStringCompareOptions)compareOptions
+{
+    return (str != nil) && ([str length] > 0) && ([self length] >= [str length])
+    && ([self rangeOfString:str options:(compareOptions | NSBackwardsSearch)].location == ([self length] - [str length]));
+}
+
+- (BOOL)containsString:(NSString *)str
+{
+    return [self containsString:str Options:NSCaseInsensitiveSearch];
+}
+
+- (BOOL)containsString:(NSString *)str Options:(NSStringCompareOptions)compareOptions
+{
+    return (str != nil) && ([str length] > 0) && ([self length] >= [str length]) && ([self rangeOfString:str options:compareOptions].location != NSNotFound);
+}
+
+- (BOOL)equalsString:(NSString *)str
+{
+    return (str != nil) && ([self length] == [str length]) && ([self rangeOfString:str options:NSCaseInsensitiveSearch].location == 0);
+}
+
+#pragma mark XML Extensions
++ (NSString *)encodeXMLCharactersIn:(NSString *)source
+{
+    if (![source isKindOfClass:[NSString class]] || !source)
+    {
+        return @"";
+    }
+    
+    NSString *result = [NSString stringWithString:source];
+    
+    if ([result rangeOfString:@"&"].location != NSNotFound)
+    {
+        result = [[result componentsSeparatedByString:@"&"] componentsJoinedByString:@"&amp;"];
+    }
+    
+    if ([result rangeOfString:@"<"].location != NSNotFound)
+    {
+        result = [[result componentsSeparatedByString:@"<"] componentsJoinedByString:@"&lt;"];
+    }
+    
+    if ([result rangeOfString:@">"].location != NSNotFound)
+    {
+        result = [[result componentsSeparatedByString:@">"] componentsJoinedByString:@"&gt;"];
+    }
+    
+    if ([result rangeOfString:@"\""].location != NSNotFound)
+    {
+        result = [[result componentsSeparatedByString:@"\""] componentsJoinedByString:@"&quot;"];
+    }
+    
+    if ([result rangeOfString:@"'"].location != NSNotFound)
+    {
+        result = [[result componentsSeparatedByString:@"'"] componentsJoinedByString:@"&apos;"];
+    }
+    
+    return result;
+}
+
++ (NSString *)decodeXMLCharactersIn:(NSString *)source
+{
+    if (![source isKindOfClass:[NSString class]] || !source)
+    {
+        return @"";
+    }
+    
+    NSString *result = [NSString stringWithString:source];
+    
+    if ([result rangeOfString:@"&amp;"].location != NSNotFound)
+    {
+        result = [[result componentsSeparatedByString:@"&amp;"] componentsJoinedByString:@"&"];
+    }
+    
+    if ([result rangeOfString:@"&lt;"].location != NSNotFound)
+    {
+        result = [[result componentsSeparatedByString:@"&lt;"] componentsJoinedByString:@"<"];
+    }
+    
+    if ([result rangeOfString:@"&gt;"].location != NSNotFound)
+    {
+        result = [[result componentsSeparatedByString:@"&gt;"] componentsJoinedByString:@">"];
+    }
+    
+    if ([result rangeOfString:@"&quot;"].location != NSNotFound)
+    {
+        result = [[result componentsSeparatedByString:@"&quot;"] componentsJoinedByString:@"\""];
+    }
+    
+    if ([result rangeOfString:@"&apos;"].location != NSNotFound)
+    {
+        result = [[result componentsSeparatedByString:@"&apos;"] componentsJoinedByString:@"'"];
+    }
+    
+    if ([result rangeOfString:@"&nbsp;"].location != NSNotFound)
+    {
+        result = [[result componentsSeparatedByString:@"&nbsp;"] componentsJoinedByString:@" "];
+    }
+    
+    if ([result rangeOfString:@"&#8220;"].location != NSNotFound)
+    {
+        result = [[result componentsSeparatedByString:@"&#8220;"] componentsJoinedByString:@"\""];
+    }
+    
+    if ([result rangeOfString:@"&#8221;"].location != NSNotFound)
+    {
+        result = [[result componentsSeparatedByString:@"&#8221;"] componentsJoinedByString:@"\""];
+    }
+    
+    if ([result rangeOfString:@"&#039;"].location != NSNotFound)
+    {
+        result = [[result componentsSeparatedByString:@"&#039;"] componentsJoinedByString:@"'"];
+    }
+    return result;
+}
+
+/**
+ compare two version
+ @param sourVersion *.*.*.*
+ @param desVersion *.*.*.*
+ @returns No,sourVersion is less than desVersion; YES, the statue is opposed
+ */
++(BOOL)compareVerison:(NSString *)sourVersion withDes:(NSString *)desVersion
+{
+    NSArray * sourArr = [sourVersion componentsSeparatedByString:@"."];
+    NSArray * desArr = [desVersion componentsSeparatedByString:@"."];
+    int sourInt, desInt;
+    NSMutableString * sourStr = [[NSMutableString alloc] init];
+    NSMutableString * desStr = [[NSMutableString alloc] init];
+    
+    if ([sourArr count] < [desArr count])
+    {
+        return YES;
+    }
+    else
+    {
+        
+    }
+    
+    for (int i = 0; i < [sourArr count]; i ++)
+    {
+        [sourStr appendFormat:@"%@", [sourArr objectAtIndex:i]];
+        [desStr appendFormat:@"%@", [desArr objectAtIndex:i]];
+    }
+    sourInt = [sourStr intValue];
+    desInt = [desStr intValue];
+    if (sourInt < desInt)
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
+    return NO;
+    
+}
+#if kSupportGTM64
+#pragma mark - hashing
+- (NSString *)base64Encoding
+{
+    NSData *stringData = [self dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *encodedString = [GTMBase64 stringByEncodingData:stringData];
+    
+    return encodedString;
+}
+#endif
+
+#if kSupportNSDataCommon
+///////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * Calculate the md5 hash using CC_MD5.
+ *
+ * @returns md5 hash of this string.
+ */
+- (NSString*)md5Hash
+{
+    return [[self dataUsingEncoding:NSUTF8StringEncoding] md5Hash];
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * Calculate the SHA1 hash using CommonCrypto CC_SHA1.
+ *
+ * @returns SHA1 hash of this string.
+ */
+- (NSString*)sha1Hash
+{
+    return [[self dataUsingEncoding:NSUTF8StringEncoding] sha1Hash];
+}
+#endif
+
+- (NSString *)valueOfLabel:(NSString *)label
+{
+    NSError *error = nil;
+    
+    NSString *reg = [NSString stringWithFormat:@"(?<=%@\\>).*(?=</%@)", label, label];
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:reg options:0 error:&error];
+    
+    if (regex != nil)
+    {
+        NSTextCheckingResult *firstMatch = [regex firstMatchInString:self options:0 range:NSMakeRange(0, [self length])];
+        
+        if (firstMatch)
+        {
+            NSRange resultRange = [firstMatch rangeAtIndex:0];
+            
+            //从urlString当中截取数据
+            NSString *result = [self substringAtRange:resultRange];
+            return result;
+        }
+    }
+    
+    return nil;
+}
+
+- (NSString *)substringAtRange:(NSRange)rang
+{
+    if ([NSString isEmpty:self])
+    {
         return nil;
     }
     
-    NSMutableString *result = [NSMutableString new];
-    if (ref.length > 0) {
-        [result appendString:ref];
+    if (rang.location > self.length)
+    {
+        return nil;
     }
-    if (path.length > 0) {
-        [result appendFormat:@"%@%@", ref.length > 0? @"/": @"", path];
+    
+    if (rang.location + rang.length > self.length)
+    {
+        return nil;
     }
-    return [result stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    return [self substringWithRange:rang];
 }
-//- (CGSize)getSizeWithFont:(UIFont *)font constrainedToSize:(CGSize)size{
-//    CGSize resultSize = CGSizeZero;
-//    if (self.length <= 0) {
-//        return resultSize;
-//    }
-//    resultSize = [self boundingRectWithSize:size
-//                                    options:(NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin)
-//                                 attributes:@{NSFontAttributeName: font}
-//                                    context:nil].size;
-//    resultSize = CGSizeMake(MIN(size.width, ceilf(resultSize.width)), MIN(size.height, ceilf(resultSize.height)));
-//    return resultSize;
-//}
-//
-//- (CGFloat)getHeightWithFont:(UIFont *)font constrainedToSize:(CGSize)size{
-//    return [self getSizeWithFont:font constrainedToSize:size].height;
-//}
-//- (CGFloat)getWidthWithFont:(UIFont *)font constrainedToSize:(CGSize)size{
-//    return [self getSizeWithFont:font constrainedToSize:size].width;
-//}
 
-//-(BOOL)containsEmoji{
-//    if (!self || self.length <= 0) {
-//        return NO;
-//    }
-//    __block BOOL returnValue = NO;
-//    [self enumerateSubstringsInRange:NSMakeRange(0, [self length]) options:NSStringEnumerationByComposedCharacterSequences usingBlock:
-//     ^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
-//         
-//         const unichar hs = [substring characterAtIndex:0];
-//         // surrogate pair
-//         if (0xd800 <= hs && hs <= 0xdbff) {
-//             if (substring.length > 1) {
-//                 const unichar ls = [substring characterAtIndex:1];
-//                 const int uc = ((hs - 0xd800) * 0x400) + (ls - 0xdc00) + 0x10000;
-//                 if (0x1d000 <= uc && uc <= 0x1f77f) {
-//                     returnValue = YES;
-//                 }
-//             }
-//         } else if (substring.length > 1) {
-//             const unichar ls = [substring characterAtIndex:1];
-//             if (ls == 0x20e3) {
-//                 returnValue = YES;
-//             }
-//             
-//         } else {
-//             // non surrogate
-//             if (0x2100 <= hs && hs <= 0x27ff) {
-//                 returnValue = YES;
-//             } else if (0x2B05 <= hs && hs <= 0x2b07) {
-//                 returnValue = YES;
-//             } else if (0x2934 <= hs && hs <= 0x2935) {
-//                 returnValue = YES;
-//             } else if (0x3297 <= hs && hs <= 0x3299) {
-//                 returnValue = YES;
-//             } else if (hs == 0xa9 || hs == 0xae || hs == 0x303d || hs == 0x3030 || hs == 0x2b55 || hs == 0x2b1c || hs == 0x2b1b || hs == 0x2b50) {
-//                 returnValue = YES;
-//             }
-//         }
-//     }];
-//    
-//    return returnValue;
-//}
-//#pragma mark emotion_monkey
-//+ (NSDictionary *)emotion_monkey_dict {
-//    static NSDictionary *_emotion_monkey_dict;
-//    static dispatch_once_t onceToken;
-//    dispatch_once(&onceToken, ^{
-//        _emotion_monkey_dict = @{
-//                                 //猴子大表情
-//                                 @"coding_emoji_01": @"哈哈",
-//                                 @"coding_emoji_02": @"吐",
-//                                 @"coding_emoji_03": @"压力山大",
-//                                 @"coding_emoji_04": @"忧伤",
-//                                 @"coding_emoji_05": @"坏人",
-//                                 @"coding_emoji_06": @"酷",
-//                                 @"coding_emoji_07": @"哼",
-//                                 @"coding_emoji_08": @"你咬我啊",
-//                                 @"coding_emoji_09": @"内急",
-//                                 @"coding_emoji_10": @"32个赞",
-//                                 @"coding_emoji_11": @"加油",
-//                                 @"coding_emoji_12": @"闭嘴",
-//                                 @"coding_emoji_13": @"wow",
-//                                 @"coding_emoji_14": @"泪流成河",
-//                                 @"coding_emoji_15": @"NO!",
-//                                 @"coding_emoji_16": @"疑问",
-//                                 @"coding_emoji_17": @"耶",
-//                                 @"coding_emoji_18": @"生日快乐",
-//                                 @"coding_emoji_19": @"求包养",
-//                                 @"coding_emoji_20": @"吹泡泡",
-//                                 @"coding_emoji_21": @"睡觉",
-//                                 @"coding_emoji_22": @"惊讶",
-//                                 @"coding_emoji_23": @"Hi",
-//                                 @"coding_emoji_24": @"打发点咯",
-//                                 @"coding_emoji_25": @"呵呵",
-//                                 @"coding_emoji_26": @"喷血",
-//                                 @"coding_emoji_27": @"Bug",
-//                                 @"coding_emoji_28": @"听音乐",
-//                                 @"coding_emoji_29": @"垒码",
-//                                 @"coding_emoji_30": @"我打你哦",
-//                                 @"coding_emoji_31": @"顶足球",
-//                                 @"coding_emoji_32": @"放毒气",
-//                                 @"coding_emoji_33": @"表白",
-//                                 @"coding_emoji_34": @"抓瓢虫",
-//                                 @"coding_emoji_35": @"下班",
-//                                 @"coding_emoji_36": @"冒泡",
-//                                 @"coding_emoji_38": @"2015",
-//                                 @"coding_emoji_39": @"拜年",
-//                                 @"coding_emoji_40": @"发红包",
-//                                 @"coding_emoji_41": @"放鞭炮",
-//                                 @"coding_emoji_42": @"求红包",
-//                                 @"coding_emoji_43": @"新年快乐",
-//                                 //猴子大表情 Gif
-//                                 @"coding_emoji_gif_01": @"奔月",
-//                                 @"coding_emoji_gif_02": @"吃月饼",
-//                                 @"coding_emoji_gif_03": @"捞月",
-//                                 @"coding_emoji_gif_04": @"打招呼",
-//                                 @"coding_emoji_gif_05": @"悠闲",
-//                                 @"coding_emoji_gif_06": @"赏月",
-//                                 @"coding_emoji_gif_07": @"中秋快乐",
-//                                 @"coding_emoji_gif_08": @"爬爬",
-//                                 };
-//    });
-//    return _emotion_monkey_dict;
-//}
-//- (NSString *)emotionMonkeyName{
-//    return [NSString emotion_monkey_dict][self];
-//}
-
-
-- (NSString *)trimWhitespace
+- (NSString *)emjoiText
 {
-    NSMutableString *str = [self mutableCopy];
-    CFStringTrimWhitespace((__bridge CFMutableStringRef)str);
-    return str;
-}
-
-- (BOOL)isEmpty
-{
-    return [[self trimWhitespace] isEqualToString:@""];
-}
-
-- (BOOL)isEmptyOrListening{
-    return [self isEmpty] || [self hasListenChar];
-}
-
-//判断是否为整形
-- (BOOL)isPureInt{
-    NSScanner* scan = [NSScanner scannerWithString:self];
-    int val;
-    return[scan scanInt:&val] && [scan isAtEnd];
-}
-
-//判断是否为浮点形
-- (BOOL)isPureFloat{
-    NSScanner* scan = [NSScanner scannerWithString:self];
-    float val;
-    return[scan scanFloat:&val] && [scan isAtEnd];
-}
-
-- (NSRange)rangeByTrimmingLeftCharactersInSet:(NSCharacterSet *)characterSet{
-    NSUInteger location = 0;
-    NSUInteger length = [self length];
-    unichar charBuffer[length];
-    [self getCharacters:charBuffer];
-    for (location = 0; location < length; location++) {
-        if (![characterSet characterIsMember:charBuffer[location]]) {
-            break;
-        }
+    if (self.length)
+    {
+        
+        NSData *data = [self dataUsingEncoding:NSNonLossyASCIIStringEncoding];
+        NSString *valueUnicode = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        NSData *dataa = [valueUnicode dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *valueEmoj = [[NSString alloc] initWithData:dataa encoding:NSNonLossyASCIIStringEncoding];
+        return valueEmoj;
     }
-    return NSMakeRange(location, length - location);
-}
-- (NSRange)rangeByTrimmingRightCharactersInSet:(NSCharacterSet *)characterSet{
-    NSUInteger location = 0;
-    NSUInteger length = [self length];
-    unichar charBuffer[length];
-    [self getCharacters:charBuffer];
-    for (length = [self length]; length > 0; length--) {
-        if (![characterSet characterIsMember:charBuffer[length - 1]]) {
-            break;
-        }
-    }
-    return NSMakeRange(location, length - location);
-}
-
-- (NSString *)stringByTrimmingLeftCharactersInSet:(NSCharacterSet *)characterSet {
-    return [self substringWithRange:[self rangeByTrimmingLeftCharactersInSet:characterSet]];
-}
-
-- (NSString *)stringByTrimmingRightCharactersInSet:(NSCharacterSet *)characterSet {
-    return [self substringWithRange:[self rangeByTrimmingRightCharactersInSet:characterSet]];
-}
-
-//转换拼音
-- (NSString *)transformToPinyin {
-    if (self.length <= 0) {
+    else
+    {
         return self;
     }
-    NSString *tempString = [self mutableCopy];
-    CFStringTransform((CFMutableStringRef)tempString, NULL, kCFStringTransformToLatin, false);
-    tempString = (NSMutableString *)[tempString stringByFoldingWithOptions:NSDiacriticInsensitiveSearch locale:[NSLocale currentLocale]];
-    tempString = [tempString stringByReplacingOccurrencesOfString:@" " withString:@""];
-    return [tempString uppercaseString];
+    
 }
 
-//是否包含语音解析的图标
-- (BOOL)hasListenChar{
-    BOOL hasListenChar = NO;
-    NSUInteger length = [self length];
-    unichar charBuffer[length];
-    [self getCharacters:charBuffer];
-    for (length = [self length]; length > 0; length--) {
-        if (charBuffer[length -1] == 65532) {//'\U0000fffc'
-            hasListenChar = YES;
-            break;
-        }
-    }
-    return hasListenChar;
+- (NSUInteger)utf8Length
+{
+    size_t length = strlen([self UTF8String]);
+    return length;
 }
+
+- (BOOL)isContainsEmoji;
+{
+    __block BOOL returnValue = NO;
+    
+    [self enumerateSubstringsInRange:NSMakeRange(0, [self length]) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
+        const unichar hs = [substring characterAtIndex:0];
+        if (0xd800 <= hs && hs <= 0xdbff)
+        {
+            if (substring.length > 1)
+            {
+                const unichar ls = [substring characterAtIndex:1];
+                const int uc = ((hs - 0xd800) * 0x400) + (ls - 0xdc00) + 0x10000;
+                if (0x1d000 <= uc && uc <= 0x1f77f)
+                {
+                    returnValue = YES;
+                }
+            }
+        }
+        else if (substring.length > 1)
+        {
+            const unichar ls = [substring characterAtIndex:1];
+            if (ls == 0x20e3)
+            {
+                returnValue = YES;
+            }
+        }
+        else
+        {
+            if (0x2100 <= hs && hs <= 0x27ff)
+            {
+                returnValue = YES;
+            }
+            else if (0x2B05 <= hs && hs <= 0x2b07)
+            {
+                returnValue = YES;
+            }
+            else if (0x2934 <= hs && hs <= 0x2935)
+            {
+                returnValue = YES;
+            }
+            else if (0x3297 <= hs && hs <= 0x3299)
+            {
+                returnValue = YES;
+            }
+            else if (hs == 0xa9 || hs == 0xae || hs == 0x303d || hs == 0x3030 || hs == 0x2b55 || hs == 0x2b1c || hs == 0x2b1b || hs == 0x2b50)
+            {
+                returnValue = YES;
+            }
+        }
+        
+        *stop = returnValue;
+    }];
+    
+    return returnValue;
+}
+
+//递归计算符合规定的文本长度
+- (NSString *)cutBeyondTextInLength:(NSInteger)maxLenth
+{
+    size_t length = strlen([self UTF8String]);
+    if (length > maxLenth)
+    {
+        NSString *text = [self substringToIndex:self.length - 1];
+        return [text cutBeyondTextInLength:maxLenth];
+    }
+    else
+    {
+        return self;
+    }
+}
+
+- (CGSize)textSizeIn:(CGSize)size font:(UIFont *)font
+{
+    return [self textSizeIn:size font:font breakMode:NSLineBreakByWordWrapping];
+}
+
+- (CGSize)textSizeIn:(CGSize)size font:(UIFont *)afont breakMode:(NSLineBreakMode)breakMode
+{
+    return [self textSizeIn:size font:afont breakMode:NSLineBreakByWordWrapping align:NSTextAlignmentLeft];
+}
+
+- (CGSize)textSizeIn:(CGSize)size font:(UIFont *)afont breakMode:(NSLineBreakMode)abreakMode align:(NSTextAlignment)alignment
+{
+    NSLineBreakMode breakMode = abreakMode;
+    UIFont *font = afont ? afont : kCommonMiddleTextFont;
+    
+    CGSize contentSize = CGSizeZero;
+    
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.lineBreakMode = breakMode;
+    paragraphStyle.alignment = alignment;
+    
+    NSDictionary* attributes = @{NSFontAttributeName:font, NSParagraphStyleAttributeName:paragraphStyle};
+    contentSize = [self boundingRectWithSize:size options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) attributes:attributes context:nil].size;
+    contentSize = CGSizeMake((int)contentSize.width + 1, (int)contentSize.height + 1);
+    return contentSize;
+}
+
+
 
 @end

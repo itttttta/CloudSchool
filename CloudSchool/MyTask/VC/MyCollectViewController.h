@@ -8,6 +8,6 @@
 
 #import "BaseViewController.h"
 
-@interface MyCollectViewController : BaseViewController
+@interface MyCollectViewController : UIViewController
 
 @end

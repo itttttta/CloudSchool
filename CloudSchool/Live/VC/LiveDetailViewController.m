@@ -11,6 +11,7 @@
 #import "LiveDetailFooterView.h"
 @interface LiveDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UIButton *bottomBtn;
 
 @end
 
@@ -21,10 +22,17 @@
     self.title = @"课程详情";
     self.view.backgroundColor = KCOLOR_WHITE;
     [self tableView];
+    [self bottomBtn];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+#pragma mark
+#pragma mark OtherAtiocn
+- (void)bottomBtnClick
+{
+    DLog(@"bottomBtnClick");
 }
 #pragma mark
 #pragma mark TableViewDelegate
@@ -34,7 +42,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return [LiveDetailFooterView getHeight];
+    return [LiveDetailFooterView getHeight:Course];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -43,7 +51,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    LiveDetailFooterView *footerView = [[LiveDetailFooterView alloc] initWithType:Face];
+    LiveDetailFooterView *footerView = [[LiveDetailFooterView alloc] initWithType:Course];
     return footerView;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -82,7 +90,7 @@
 {
     if(!_tableView)
     {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0, KSCREEN_WIDTH, KSCREEN_HEIGHT-KNav_Height) style:UITableViewStyleGrouped];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0, KSCREEN_WIDTH, KSCREEN_HEIGHT-KNav_Height - 44) style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.backgroundColor = KCOLOR_WHITE;
@@ -95,6 +103,21 @@
     }
     return _tableView;
 }
-
+- (UIButton *)bottomBtn
+{
+    if(!_bottomBtn)
+    {
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT - KNav_Height - 44, SCREEN_WIDTH, 44)];
+        btn.backgroundColor = KTHEME_COLOR;
+        [btn setTitle:@"报名参见" forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(bottomBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        [btn setTitleColor:KCOLOR_WHITE forState:UIControlStateNormal];
+        btn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+        btn.titleLabel.font = KFontFirst;
+        _bottomBtn = btn;
+        [self.view addSubview:_bottomBtn];
+    }
+    return _bottomBtn;
+}
 
 @end

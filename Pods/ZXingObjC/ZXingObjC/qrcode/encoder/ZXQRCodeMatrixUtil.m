@@ -329,7 +329,7 @@ const int ZX_TYPE_INFO_MASK_PATTERN = 0x5412;
   return YES;
 }
 
-// Check if "value" is empty.
+//// Check if "value" is empty.
 + (BOOL)isEmpty:(int)value {
   return value == -1;
 }

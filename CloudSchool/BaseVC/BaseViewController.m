@@ -39,19 +39,20 @@
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController setNavigationBarHidden:NO];
     [self.navigationController.navigationBar setBarTintColor:KCOLOR_WHITE];
-    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    [self.navigationController.navigationBar setTintColor:KTHEME_COLOR];
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
-    [navigationBar setBackgroundImage:[UIImage imageWithColor:KCOLOR_LineColor size:CGSizeMake(SCREEN_WIDTH , 1)]
+    [navigationBar setBackgroundImage:[UIImage imageWithColor:KCOLOR_WHITE size:CGSizeMake(SCREEN_WIDTH , 1)]
                        forBarPosition:UIBarPositionAny
                            barMetrics:UIBarMetricsDefault];
     [navigationBar setShadowImage:[UIImage new]];
-    navigationBar.backIndicatorImage = [UIImage imageNamed:@"箭头"];
-    navigationBar.backIndicatorTransitionMaskImage = [UIImage imageNamed:@"箭头"];
+    UIView *lineView = [UIView createViewWithFrame:CGRectMake(0, navigationBar.height - 0.5, SCREEN_WIDTH, 0.5)
+                                   backgroundColor:KCOLOR_LineColor];
+    [navigationBar addSubview:lineView];
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
                                                          forBarMetrics:UIBarMetricsDefault];
     
-    UIBarButtonItem *temporaryBarButtonItem = [[UIBarButtonItem alloc] init];
-    temporaryBarButtonItem.title = @"返回";
-    self.navigationItem.backBarButtonItem = temporaryBarButtonItem;
+    navigationBar.backIndicatorImage = [UIImage imageNamed:@"箭头"];
+    navigationBar.backIndicatorTransitionMaskImage = [UIImage imageNamed:@"箭头"];
+    
 }
 @end

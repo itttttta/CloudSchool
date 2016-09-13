@@ -7,6 +7,12 @@
 //
 
 #import "LiveDetailFooterView.h"
+#import "LiveProgressView.h"
+#import "MoreClassView.h"
+#import "ClassCollectionView.h"
+#import "ClassCollectionViewCell.h"
+#define ImageViewHeight 87 * (SCREEN_WIDTH/320.0)
+#define CellHeight ImageViewHeight+50.0
 
 @implementation LiveDetailFooterView
 - (instancetype)initWithFrame:(CGRect)frame
@@ -70,8 +76,11 @@
         if(!_progressView)
         {
             UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 60, SCREEN_WIDTH, 65)];
-            view.backgroundColor = KCOLOR_RED;
+            NSArray *targetArray = [NSArray arrayWithObjects:@"课程",@"考试",@"测评", nil];
+            NSArray *pointArray = [NSArray arrayWithObjects:@0.1,@0.5,@0.7, nil];
             _progressView = view;
+            LiveProgressView *progressView = [[LiveProgressView alloc] initWith:@"免费" target:targetArray PointArray:pointArray];
+            [_progressView addSubview:progressView];
             [self addSubview:_progressView];
         }
         
@@ -230,14 +239,47 @@
     return self;
     
 }
-- (instancetype)initWithType:(LiveDetailFooterViewType)type
+
+- (instancetype)initWithCouese
 {
-    self = [super init];
+    self = [super initWithFrame:CGRectMake(0, 0, 0, 0)];
     if(!self)
     {
         return nil;
     }
+    MoreClassView *moreClassView = [[MoreClassView alloc] init];
+    [self addSubview:moreClassView];
+    
+    ClassCollectionView *classCollectionView = [[ClassCollectionView alloc] initWithFrame:CGRectMake(10,
+                                                                                                     moreClassView.bottom,
+                                                                                                     SCREEN_WIDTH - 20,
+                                                                                                     [ClassCollectionViewCell getHeight]*2)];
+    classCollectionView.backgroundColor = KCOLOR_RED;
+    [self addSubview:classCollectionView];
     return self;
+}
+- (instancetype)initWithType:(LiveDetailFooterViewType)type
+{
+  
+    
+    switch (type) {
+        case Course:
+            self = [self initWithCouese];
+            break;
+        default:
+        {
+            self = [super init];
+            if(!self)
+            {
+                return nil;
+            }
+        }
+            break;
+    }
+    
+    return self;
+    
+    
 }
 
 #pragma mark
@@ -252,9 +294,24 @@
         DLog(@"考试");
     }
 }
-+ (CGFloat)getHeight
++ (CGFloat)getHeight:(LiveDetailFooterViewType)type
 {
-    return 175 + 10+ 100 + 75 + 75 + 10 + 44;
+    
+    switch (type) {
+        case Live:
+            return 125 + 10+ 100 + 75 + 75 + 10 + 44;
+            break;
+        case Face:
+            return 175 + 10+ 100 + 75 + 75 + 10 + 44;
+            break;
+        case Course:
+            return 50.0 + CellHeight*2;
+            break;
+            
+        default:
+            break;
+    }
+    return 0.01;
 }
 
 @end

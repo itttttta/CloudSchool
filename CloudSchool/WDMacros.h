@@ -15,6 +15,8 @@
 #import "AppDelegate.h"
 #import <ReactiveCocoa.h>
 #import "PublicMethod.h"
+#import <AFNetworking.h>
+
 
 //.打印开关控制
 //----------------------------------------------------------------------------------------------

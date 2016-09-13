@@ -11,6 +11,8 @@ typedef NS_ENUM(NSInteger, LiveDetailFooterViewType) {
     //以下是枚举成员
     Live = 0,//直播
     Face = 1,//面授
+    Course = 2,//面授
+
 };
 @interface LiveDetailFooterView : UIView
 @property (nonatomic, strong) UIView *topView;
@@ -34,5 +36,5 @@ typedef NS_ENUM(NSInteger, LiveDetailFooterViewType) {
 
 - (instancetype)initWithType:(LiveDetailFooterViewType)type;
 
-+ (CGFloat)getHeight;
++ (CGFloat)getHeight:(LiveDetailFooterViewType)type;
 @end
