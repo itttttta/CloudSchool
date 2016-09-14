@@ -25,6 +25,8 @@ pod 'MJRefresh'
 pod 'DateTools'
 
 pod 'MJExtension'
+
+pod 'MBProgressHUD', '~> 1.0.0'
   
   # Pods for CloudSchool
 

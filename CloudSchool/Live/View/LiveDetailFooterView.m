@@ -25,7 +25,7 @@
     self.backgroundColor  = KCOLOR_BackGroundColor;
     if(!_topView)
     {
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 175)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, [[self class] getTopViewHeight:viewType])];
         view.backgroundColor = KCOLOR_WHITE;
         _topView = view;
         [self addSubview:_topView];
@@ -53,7 +53,7 @@
             [self addSubview:label];
             _scoreLabel = label;
         }
-        UIView *lineView = [UIView createViewWithFrame:CGRectMake(13, _scoreLabel.bottom + 20, SCREEN_WIDTH - 26, 0.5)
+        UIView *lineView = [UIView createViewWithFrame:CGRectMake(13, _scoreLabel.bottom + 10, SCREEN_WIDTH - 26, 0.5)
                                        backgroundColor:KCOLOR_LineColor];
         [self addSubview:lineView];
         NSArray *array = [NSArray arrayWithObjects:@"考试",@"测评", nil];
@@ -84,29 +84,34 @@
             [self addSubview:_progressView];
         }
         
-        if(!_addressLabel)
+        if(viewType == Face)
         {
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(13, _topView.height - 50, SCREEN_WIDTH - 150, 13)];
-            label.textColor = KCOLOR_Font9ba6c0;
-            label.backgroundColor = KCOLOR_WHITE;
-            label.font = KFontSecond;
-            label.text = @"地址";
-            label.textAlignment = NSTextAlignmentLeft;
-            [self.topView addSubview:label];
-            _addressLabel = label;
+            if(!_addressLabel)
+            {
+                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(13, _topView.height - 50, SCREEN_WIDTH - 150, 13)];
+                label.textColor = KCOLOR_Font9ba6c0;
+                label.backgroundColor = KCOLOR_WHITE;
+                label.font = KFontSecond;
+                label.text = @"地址";
+                label.textAlignment = NSTextAlignmentLeft;
+                [self.topView addSubview:label];
+                _addressLabel = label;
+            }
+            
+            if(!_timeLabel)
+            {
+                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(13, _addressLabel.bottom + 10, SCREEN_WIDTH - 150, 13)];
+                label.textColor = KCOLOR_Font9ba6c0;
+                label.backgroundColor = KCOLOR_WHITE;
+                label.font = KFontSecond;
+                label.text = @"时间";
+                label.textAlignment = NSTextAlignmentLeft;
+                [self.topView addSubview:label];
+                _timeLabel = label;
+            }
+            
         }
-        
-        if(!_timeLabel)
-        {
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(13, _addressLabel.bottom + 10, SCREEN_WIDTH - 150, 13)];
-            label.textColor = KCOLOR_Font9ba6c0;
-            label.backgroundColor = KCOLOR_WHITE;
-            label.font = KFontSecond;
-            label.text = @"时间";
-            label.textAlignment = NSTextAlignmentLeft;
-            [self.topView addSubview:label];
-            _timeLabel = label;
-        }
+      
         
         if(!_lineView)
         {
@@ -261,7 +266,7 @@
 - (instancetype)initWithType:(LiveDetailFooterViewType)type
 {
   
-    
+    viewType = type;
     switch (type) {
         case Course:
             self = [self initWithCouese];
@@ -281,17 +286,27 @@
     
     
 }
-
+#pragma mark
+#pragma mark refresh
+- (void)refresh:(CourseDetail_M *)courseDetail_M
+{
+    _className.text = courseDetail_M.courseName;
+    _scoreLabel.text = [NSString stringWithFormat:@"%@/学分%@",courseDetail_M.courseClass,courseDetail_M.courseCredit];
+    [_iconImageView imageCacheWithImageView:_iconImageView urlString:courseDetail_M.teacherProfileUrl];
+    _teacherNameLabel.text = [NSString stringWithFormat:@"%@  %@  %@",courseDetail_M.teacherName,courseDetail_M.teacherPosition,courseDetail_M.teacherFaculty];
+    _doctorLabel.text = [NSString stringWithFormat:@"%@  %@",courseDetail_M.teacherTitle,courseDetail_M.teacherHospital];
+    _targetLabel.text = [NSString stringWithFormat:@"%@",courseDetail_M.teachingObjective];
+    _targetLabel.text = [NSString stringWithFormat:@"%@",courseDetail_M.teachingObjective];
+    _keyPointLabel.text = [NSString stringWithFormat:@"%@",courseDetail_M.teachingObjective];
+}
 #pragma mark
 #pragma mark otherAction
 - (void)btnClick:(UIButton * )sender
 {
-    if(sender.tag)
+
+    if(_delegate)
     {
-        DLog(@"测评");
-    }else
-    {
-        DLog(@"考试");
+        [_delegate examBtnClick:sender.tag];
     }
 }
 + (CGFloat)getHeight:(LiveDetailFooterViewType)type
@@ -299,10 +314,10 @@
     
     switch (type) {
         case Live:
-            return 125 + 10+ 100 + 75 + 75 + 10 + 44;
+            return 125 + 10+ 100 + 75 + 75 + 10 ;
             break;
         case Face:
-            return 175 + 10+ 100 + 75 + 75 + 10 + 44;
+            return 175 + 10+ 100 + 75 + 75 + 10 ;
             break;
         case Course:
             return 50.0 + CellHeight*2;
@@ -312,6 +327,14 @@
             break;
     }
     return 0.01;
+}
++ (CGFloat)getTopViewHeight:(LiveDetailFooterViewType)type
+{
+    if(type==Live)
+    {
+        return 125.0;
+    }
+    return 175.0;
 }
 
 @end

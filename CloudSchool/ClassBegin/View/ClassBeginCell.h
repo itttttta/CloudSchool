@@ -17,9 +17,8 @@
 @property (nonatomic, strong) UILabel *typeLabel;
 @property (nonatomic, strong) UIView *lineView;
 
+- (void)refresh:(Course_M*)Course_M;
 
 + (CGFloat)getHeight;
-
-
 
 @end

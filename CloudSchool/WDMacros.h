@@ -16,7 +16,13 @@
 #import <ReactiveCocoa.h>
 #import "PublicMethod.h"
 #import <AFNetworking.h>
-
+#import "MBProgressHUD.h"
+#import "ObjcRuntime.h"
+#import <MJExtension.h>
+#import <MJRefresh.h>
+#import "NetWorkManager.h"
+#import "ModeCenter.h"
+#import "UIImageView+SDWDImageCache.h"
 
 //.打印开关控制
 //----------------------------------------------------------------------------------------------
@@ -106,7 +112,7 @@
 #define KICON_FONT_(a)                      [UIFont fontWithName:@"iconfont" size:a]
 
 //
-#define KSFS(b) [NSString stringWithFormat:@"%@",(b =  b ? b :@"")]
+#define KSFS(a) [NSString stringWithFormat:@"%@",(a =  a ? a :@"")]
 
 
 

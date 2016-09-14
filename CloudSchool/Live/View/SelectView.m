@@ -37,7 +37,7 @@
             @strongify(self)
             if( self.delegate)
             {
-                [ self.delegate MyOrderTopView:idx];
+                [ self.delegate selectTopView:idx];
             }
             if( self.selectLineView != lineView)
             {

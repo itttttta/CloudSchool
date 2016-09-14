@@ -14,6 +14,12 @@ typedef NS_ENUM(NSInteger, LiveDetailFooterViewType) {
     Course = 2,//面授
 
 };
+static LiveDetailFooterViewType viewType;
+
+@protocol LiveDetailFooterViewDelegate <NSObject>
+- (void)examBtnClick:(NSInteger)index;
+@end
+
 @interface LiveDetailFooterView : UIView
 @property (nonatomic, strong) UIView *topView;
 @property (nonatomic, strong) UIView *centerView;
@@ -29,12 +35,15 @@ typedef NS_ENUM(NSInteger, LiveDetailFooterViewType) {
 @property (nonatomic, strong) UILabel *addressLabel;//地址
 @property (nonatomic, strong) UILabel *timeLabel;//时间
 @property (nonatomic, strong) UIImageView *iconImageView;
-@property (nonatomic, strong) UILabel *teacherNameLabel;//名称
+@property (nonatomic, strong) UILabel *teacherNameLabel;//授课老师
 @property (nonatomic, strong) UILabel *doctorLabel;//医院
 @property (nonatomic, strong) UILabel *targetLabel;//教学目标
 @property (nonatomic, strong) UILabel *keyPointLabel;//知识要点
+@property (nonatomic, weak) id<LiveDetailFooterViewDelegate>delegate ;
 
 - (instancetype)initWithType:(LiveDetailFooterViewType)type;
 
+- (void)refresh:(CourseDetail_M *)courseDetail_M;
 + (CGFloat)getHeight:(LiveDetailFooterViewType)type;
+
 @end

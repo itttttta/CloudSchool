@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 @protocol SelectViewDelegate<NSObject>
-- (void)MyOrderTopView:(NSInteger)type;
+- (void)selectTopView:(NSInteger)type;
 @end
 
 @interface SelectView : UIView

@@ -38,6 +38,7 @@ PODS:
   - DateTools (1.7.0)
   - JSBadgeView (1.4.1)
   - Masonry (1.0.1)
+  - MBProgressHUD (1.0.0)
   - MJExtension (3.0.13)
   - MJRefresh (3.1.12)
   - ReactiveCocoa (2.5):
@@ -61,6 +62,7 @@ DEPENDENCIES:
   - DateTools
   - JSBadgeView
   - Masonry
+  - MBProgressHUD (~> 1.0.0)
   - MJExtension
   - MJRefresh
   - ReactiveCocoa
@@ -74,6 +76,7 @@ SPEC CHECKSUMS:
   DateTools: 53288ee8b905fdc75897a1e6b5cc0144b14cba60
   JSBadgeView: 3861ddee41094284d9468e6d0af5107f703aaac5
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
+  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MJExtension: 5932755f451458eefa24239358817f8d291240c7
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
   ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
@@ -81,6 +84,6 @@ SPEC CHECKSUMS:
   SWTableViewCell: 2a94aadc9d47b2b611fa064566bf57948b95b579
   ZXingObjC: bf15b3814f7a105b6d99f47da2333c93a063650a
 
-PODFILE CHECKSUM: 93b0919413f7c28156f4e7e305b446975aa0ab3e
+PODFILE CHECKSUM: 177e7160c5c83b31545d9edcc53c27c03498694c
 
 COCOAPODS: 1.0.1

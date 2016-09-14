@@ -9,30 +9,78 @@
 #import "LiveDetailViewController.h"
 #import "LiveDetailHeadView.h"
 #import "LiveDetailFooterView.h"
-@interface LiveDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
+#import "ExamViewController.h"
+#import "TestViewController.h"
+@interface LiveDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,SelectViewDelegate,LiveDetailFooterViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIButton *bottomBtn;
+@property (nonatomic, strong) CourseDetail_M *courseDetail_M;
+@property (nonatomic, assign) LiveDetailFooterViewType footerViewType;
 
 @end
 
 @implementation LiveDetailViewController
-
+- (instancetype)init
+{
+    if(!self)
+    {
+        return nil;
+    }
+    _footerViewType = Live;
+    return self;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"课程详情";
+    self.title = _course_M.courseName?:@"课程详情";
     self.view.backgroundColor = KCOLOR_WHITE;
+    
+
     [self tableView];
     [self bottomBtn];
+    [self getAllData];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
 }
 #pragma mark
 #pragma mark OtherAtiocn
 - (void)bottomBtnClick
 {
     DLog(@"bottomBtnClick");
+}
+#pragma mark
+#pragma mark LiveDetailFooterViewDelegate
+- (void)examBtnClick:(NSInteger)index
+{
+    id vc;
+    if(!index)
+    {
+        vc = [[ExamViewController alloc] init];
+    
+    }else{
+        vc = [[TestViewController alloc] init];
+
+    }
+    [self.navigationController pushViewController:vc animated:YES];
+}
+#pragma mark
+#pragma mark SelectViewDelegate
+- (void)selectTopView:(NSInteger)type
+{
+    if(type)
+    {
+        _footerViewType = Course;
+    }else
+    {
+        _footerViewType = Live;
+    }
+    [self.tableView reloadData];
 }
 #pragma mark
 #pragma mark TableViewDelegate
@@ -42,7 +90,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return [LiveDetailFooterView getHeight:Course];
+    return [LiveDetailFooterView getHeight:_footerViewType];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -51,12 +99,17 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    LiveDetailFooterView *footerView = [[LiveDetailFooterView alloc] initWithType:Course];
+    LiveDetailFooterView *footerView = [[LiveDetailFooterView alloc] initWithType:_footerViewType];
+    footerView.delegate =self;
+    [footerView refresh:_courseDetail_M];
     return footerView;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    LiveDetailHeadView *headView = [[LiveDetailHeadView alloc] init];
+    
+    LiveDetailHeadView *headView = [[LiveDetailHeadView alloc] initWithType:_footerViewType];
+    headView.seletView.delegate = self;
+    [headView refresh:_courseDetail_M];
     return headView;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -90,7 +143,7 @@
 {
     if(!_tableView)
     {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0, KSCREEN_WIDTH, KSCREEN_HEIGHT-KNav_Height - 44) style:UITableViewStyleGrouped];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0, SCREEN_WIDTH, SCREEN_HEIGHT - KNav_Height - 44) style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.backgroundColor = KCOLOR_WHITE;
@@ -118,6 +171,19 @@
         [self.view addSubview:_bottomBtn];
     }
     return _bottomBtn;
+}
+#pragma mark
+#pragma mark 
+- (void)getAllData
+{
+    //获取课程详情
+    [[NetWorkManager sharedManager] request_DetailCourseBy:self.course_M.courseId andBlock:^(id data, NSError *error) {
+        if([data[@"R"] isEqual:@200]){
+            _courseDetail_M = [CourseDetail_M mj_objectWithKeyValues:data[@"RD"]];
+            [self.tableView reloadData];
+        }
+        [self.tableView.mj_header endRefreshing];
+    }];
 }
 
 @end

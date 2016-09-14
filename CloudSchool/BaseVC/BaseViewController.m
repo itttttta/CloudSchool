@@ -31,9 +31,8 @@
 -(void)applyNormalNavBar
 {
     //设置navigationbar字体
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18],
-                                                                      NSForegroundColorAttributeName:KCOLOR_WHITE,
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16],
+                                                                      NSForegroundColorAttributeName:KCOLOR_Font333333,
                                                                       }];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     [self.navigationController.navigationBar setTranslucent:NO];

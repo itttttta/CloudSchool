@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface LiveDetailViewController : UIViewController
+@property (nonatomic, strong) Course_M *course_M;
 
 @end

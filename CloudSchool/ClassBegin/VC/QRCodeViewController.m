@@ -17,6 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = KCOLOR_WHITE;
     self.title = @"我的二维码";
     [self backView];
     

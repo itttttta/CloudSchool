@@ -11,8 +11,10 @@
 #import "ClassBeginFooterView.h"
 #import "QRCodeViewController.h"
 #import "ClassBeginCell.h"
+#import "LiveDetailViewController.h"
 @interface ClassBeginViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) Course_M_List *course_M_List;
 
 @end
 
@@ -22,6 +24,12 @@
     [super viewDidLoad];
     self.title = @"上课啦";
     [self tableView];
+    [self getAllData];
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [self getAllData];
+    }];
+
+    
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -64,7 +72,9 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-   
+    LiveDetailViewController *vc = [[LiveDetailViewController alloc] init];
+    vc.course_M = self.course_M_List.selectCourses[indexPath.row];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark
 #pragma mark UITableViewDataSource
@@ -77,12 +87,12 @@
         cell = [[ClassBeginCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentity];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
+    [cell refresh:_course_M_List.selectCourses[indexPath.row]];
     return cell;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;
+    return _course_M_List.selectCourses.count;
 }
 #pragma mark
 #pragma mark ViewInit
@@ -104,5 +114,28 @@
     }
     return _tableView;
 }
-
+#pragma mark
+#pragma mark getAllData
+- (void)getAllData
+{
+    //获取课程列表
+    [[NetWorkManager sharedManager] request_MyCourseListandBlock:^(id data, NSError *error) {
+        if([data[@"R"] isEqual:@200]){
+            _course_M_List = [Course_M_List mj_objectWithKeyValues:data[@"RD"]];
+            [self.tableView reloadData];
+        }
+        [self.tableView.mj_header endRefreshing];
+    }];
+    
+    //获取推荐课程
+    [[NetWorkManager sharedManager] request_RecomendCoursesLandBlock:^(id data, NSError *error) {
+        if([data[@"R"] isEqual:@200]){
+            [self.tableView reloadData];
+        }
+        [self.tableView.mj_header endRefreshing];
+    }];
+}
 @end
+
+
+
