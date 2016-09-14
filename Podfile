@@ -1,8 +1,8 @@
 
 
 target 'CloudSchool' do
- platform :ios, ‘7.0’
-pod 'AFNetworking', '~> 3.0'
+platform :ios, ‘7.0’
+pod 'AFNetworking', '~> 2.6.3'
 
 platform :ios, '7.0'
 pod 'SDWebImage', '~>3.8'
