@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface ExamViewController : UIViewController
+@property (nonatomic, strong) NSString *courseID ;
 
 @end

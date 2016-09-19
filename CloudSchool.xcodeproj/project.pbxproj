@@ -127,6 +127,12 @@
 		113E5FDF1D83EE6700620910 /* LiveHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 113E5FDE1D83EE6700620910 /* LiveHeadView.m */; };
 		113E5FE21D83EE7800620910 /* LiveCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 113E5FE11D83EE7800620910 /* LiveCell.m */; };
 		118EB8F01D8940A500BF855E /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118EB8EF1D8940A500BF855E /* TestViewController.m */; };
+		118EB8F31D89446D00BF855E /* ExamInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 118EB8F21D89446D00BF855E /* ExamInfoView.m */; };
+		118EB8F61D894DC100BF855E /* ExamItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 118EB8F51D894DC100BF855E /* ExamItemView.m */; };
+		11B809691D8F89280020EC61 /* ExamItemHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B809681D8F89280020EC61 /* ExamItemHeadView.m */; };
+		11B8096C1D8F89BF0020EC61 /* ExamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B8096B1D8F89BF0020EC61 /* ExamItemCell.m */; };
+		11B8096F1D8FB0250020EC61 /* ExamResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B8096E1D8FB0250020EC61 /* ExamResultView.m */; };
+		11B809721D8FC57C0020EC61 /* ExamResultProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B809711D8FC57B0020EC61 /* ExamResultProgressView.m */; };
 		11EEC6C01D829994008C0637 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 11EEC6BF1D829994008C0637 /* main.m */; };
 		11EEC6C31D829994008C0637 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 11EEC6C21D829994008C0637 /* AppDelegate.m */; };
 		11EEC6CB1D829994008C0637 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11EEC6CA1D829994008C0637 /* Assets.xcassets */; };
@@ -341,6 +347,18 @@
 		113E5FE11D83EE7800620910 /* LiveCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveCell.m; sourceTree = "<group>"; };
 		118EB8EE1D8940A500BF855E /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		118EB8EF1D8940A500BF855E /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
+		118EB8F11D89446D00BF855E /* ExamInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamInfoView.h; sourceTree = "<group>"; };
+		118EB8F21D89446D00BF855E /* ExamInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamInfoView.m; sourceTree = "<group>"; };
+		118EB8F41D894DC100BF855E /* ExamItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamItemView.h; sourceTree = "<group>"; };
+		118EB8F51D894DC100BF855E /* ExamItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamItemView.m; sourceTree = "<group>"; };
+		11B809671D8F89280020EC61 /* ExamItemHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamItemHeadView.h; sourceTree = "<group>"; };
+		11B809681D8F89280020EC61 /* ExamItemHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamItemHeadView.m; sourceTree = "<group>"; };
+		11B8096A1D8F89BF0020EC61 /* ExamItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamItemCell.h; sourceTree = "<group>"; };
+		11B8096B1D8F89BF0020EC61 /* ExamItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamItemCell.m; sourceTree = "<group>"; };
+		11B8096D1D8FB0250020EC61 /* ExamResultView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamResultView.h; sourceTree = "<group>"; };
+		11B8096E1D8FB0250020EC61 /* ExamResultView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamResultView.m; sourceTree = "<group>"; };
+		11B809701D8FC57B0020EC61 /* ExamResultProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamResultProgressView.h; sourceTree = "<group>"; };
+		11B809711D8FC57B0020EC61 /* ExamResultProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamResultProgressView.m; sourceTree = "<group>"; };
 		11EEC6BB1D829994008C0637 /* CloudSchool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CloudSchool.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11EEC6BF1D829994008C0637 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		11EEC6C11D829994008C0637 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -702,6 +720,18 @@
 				113E5FD61D83B9EB00620910 /* ClassCollectionView.m */,
 				112BDC431D85219E005214B3 /* ClassBeginCell.h */,
 				112BDC441D85219E005214B3 /* ClassBeginCell.m */,
+				118EB8F11D89446D00BF855E /* ExamInfoView.h */,
+				118EB8F21D89446D00BF855E /* ExamInfoView.m */,
+				118EB8F41D894DC100BF855E /* ExamItemView.h */,
+				118EB8F51D894DC100BF855E /* ExamItemView.m */,
+				11B809671D8F89280020EC61 /* ExamItemHeadView.h */,
+				11B809681D8F89280020EC61 /* ExamItemHeadView.m */,
+				11B8096A1D8F89BF0020EC61 /* ExamItemCell.h */,
+				11B8096B1D8F89BF0020EC61 /* ExamItemCell.m */,
+				11B8096D1D8FB0250020EC61 /* ExamResultView.h */,
+				11B8096E1D8FB0250020EC61 /* ExamResultView.m */,
+				11B809701D8FC57B0020EC61 /* ExamResultProgressView.h */,
+				11B809711D8FC57B0020EC61 /* ExamResultProgressView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -998,16 +1028,20 @@
 				1103E74F1D87CBAA006D45E6 /* ReaderThumbCache.m in Sources */,
 				1103E75C1D87CBAA006D45E6 /* UIXToolbarView.m in Sources */,
 				1103E74C1D87CBAA006D45E6 /* ReaderDocumentOutline.m in Sources */,
+				11B8096F1D8FB0250020EC61 /* ExamResultView.m in Sources */,
 				113E5FAD1D83967C00620910 /* UIViewController+Swizzle.m in Sources */,
 				113E5F9F1D83967C00620910 /* BaseViewController.m in Sources */,
 				113E5FAC1D83967C00620910 /* UIView+firstResponder.m in Sources */,
 				113E5FA51D83967C00620910 /* UIColor+expanded.m in Sources */,
 				113E5FAB1D83967C00620910 /* UIView+FadeAnimation.m in Sources */,
+				11B809691D8F89280020EC61 /* ExamItemHeadView.m in Sources */,
 				1103E74A1D87CBAA006D45E6 /* ReaderContentView.m in Sources */,
 				112BDC1B1D84EBDA005214B3 /* TaskReportViewController.m in Sources */,
 				113E5FA01D83967C00620910 /* NSDate+Category.m in Sources */,
 				113E5FE21D83EE7800620910 /* LiveCell.m in Sources */,
 				1103E75B1D87CBAA006D45E6 /* ThumbsViewController.m in Sources */,
+				118EB8F31D89446D00BF855E /* ExamInfoView.m in Sources */,
+				118EB8F61D894DC100BF855E /* ExamItemView.m in Sources */,
 				11F10EA51D88E9EB00DD5A48 /* NetWorkApiClient.m in Sources */,
 				1103E75A1D87CBAA006D45E6 /* ThumbsMainToolbar.m in Sources */,
 				113E5FDF1D83EE6700620910 /* LiveHeadView.m in Sources */,
@@ -1052,6 +1086,7 @@
 				112BDC241D84EE54005214B3 /* HelpViewController.m in Sources */,
 				113E5FD71D83B9EB00620910 /* ClassCollectionView.m in Sources */,
 				1103E7501D87CBAA006D45E6 /* ReaderThumbFetch.m in Sources */,
+				11B809721D8FC57C0020EC61 /* ExamResultProgressView.m in Sources */,
 				1103E7221D87CBAA006D45E6 /* CGPDFDocument.m in Sources */,
 				112BDC421D850A9E005214B3 /* HelpCell.m in Sources */,
 				113E5FB31D83967C00620910 /* UIPlaceHolderTextView.m in Sources */,
@@ -1061,6 +1096,7 @@
 				113E5FA61D83967C00620910 /* UIImage+Color.m in Sources */,
 				113E5FB51D83967C00620910 /* MyImagePicker.m in Sources */,
 				113E5FCE1D83AE7A00620910 /* ClassBeginFooterView.m in Sources */,
+				11B8096C1D8F89BF0020EC61 /* ExamItemCell.m in Sources */,
 				113E5FB71D83967C00620910 /* MyPicker.m in Sources */,
 				112BDC211D84EE4A005214B3 /* MyCollectViewController.m in Sources */,
 				113E5FA31D83967C00620910 /* NSString+Common.m in Sources */,

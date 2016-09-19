@@ -116,5 +116,19 @@
 @property (nonatomic, copy) NSString *beginDate;
 
 @end
+@interface ExamInfo_M : NSObject
+
+@property (nonatomic, copy) NSString * passQuestionNum;
+
+@property (nonatomic, copy) NSString * testLibId;
+
+@property (nonatomic, copy) NSString *testDuration;
+
+@property (nonatomic, copy) NSString * drawQuestionNumber;
+
+@property (nonatomic, copy) NSString * testLibName;
+
+@end
+
 
 

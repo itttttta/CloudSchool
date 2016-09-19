@@ -58,16 +58,18 @@
 #pragma mark LiveDetailFooterViewDelegate
 - (void)examBtnClick:(NSInteger)index
 {
-    id vc;
     if(!index)
     {
-        vc = [[ExamViewController alloc] init];
-    
+        ExamViewController* vc = [[ExamViewController alloc] init];
+        vc.courseID = [self.course_M.courseId copy];
+        
+        [self.navigationController pushViewController:vc animated:YES];
     }else{
-        vc = [[TestViewController alloc] init];
+        
+       TestViewController * vc = [[TestViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
 
     }
-    [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark
 #pragma mark SelectViewDelegate

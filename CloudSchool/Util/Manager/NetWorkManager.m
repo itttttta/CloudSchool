@@ -101,11 +101,14 @@
                                                         }];
 }
 //获取考试信息
-- (void)request_ExamInfoandBlock:(void (^)(id data, NSError *error))block
+- (void)request_ExamInfo:(NSString *)courseID
+                andBlock:(void (^)(id data, NSError *error))block
 {
     NSMutableDictionary * params = [NSMutableDictionary dictionary];
     kSetDict(@"114", @"userId");
     kSetDict(@"api.south.course.get.exam.info", @"TX");
+    kSetDict(courseID, @"courseId");
+
 
     [[NetWorkApiClient sharedJsonClient] requestJsonDataWithPath:@"api/exec.htm"
                                                           params:nil
@@ -121,6 +124,33 @@
                                                         }];
 
 }
+//获取考题信息
+- (void)request_ExamList:(NSString *)courseID
+               testLibID:(NSString *)testLibID
+                andBlock:(void (^)(id data, NSError *error))block
+{
+    NSMutableDictionary * params = [NSMutableDictionary dictionary];
+    kSetDict(@"114", @"userId");
+    kSetDict(@"api.south.course.get.exam.question", @"TX");
+    kSetDict(courseID, @"courseId");
+    kSetDict(testLibID, @"testLibId");
+
+    
+    [[NetWorkApiClient sharedJsonClient] requestJsonDataWithPath:@"api/exec.htm"
+                                                          params:nil
+                                                        formDict:params
+                                                        adnBlock:^(id data, NSError *error) {
+                                                            if(!error)
+                                                            {
+                                                                block(data,error);
+                                                            }else
+                                                            {
+                                                                block(nil,error);
+                                                            }
+                                                        }];
+    
+}
+
 //测试专用
 - (void)request_textGetandBlock:(void (^)(id data, NSError *error))block
 {

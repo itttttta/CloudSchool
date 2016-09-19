@@ -17,6 +17,8 @@
 //
 #ifdef DEBUG
 #define BaseUrl  @"http://192.168.0.34:8080/"
+//#define BaseUrl  @"http://192.168.2.239:8080/"
+
 
 #else
 #define BaseUrl  @"http://lincon.com.cn/"
@@ -109,7 +111,9 @@ static dispatch_once_t onceToken;
         [formData appendPartWithFormData:[formDict mj_JSONData] name:@"requestData"];
     }
        success:^(AFHTTPRequestOperation *operation, id responseObject) {
-           DLog(@"%@", operation.response);
+           DLog(@"%@\n", operation.response);
+           DLog(@"\n===========request===========\n%@:\n%@",  aPath,formDict);
+           DLog(@"\n%@\n",responseObject[@"I"]);
            DLog(@"JSON:\n %@", responseObject);
            if ([responseObject isKindOfClass:[NSDictionary class]]) {
                block(responseObject, nil);

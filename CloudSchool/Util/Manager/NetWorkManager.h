@@ -51,8 +51,18 @@
  *
  *  @param block block
  */
-- (void)request_ExamInfoandBlock:(void (^)(id data, NSError *error))block;
+- (void)request_ExamInfo:(NSString *)courseID
+                andBlock:(void (^)(id data, NSError *error))block;
 
+
+/**
+ *  获取考题信息
+ *
+ *  @param block block
+ */
+- (void)request_ExamList:(NSString *)courseID
+               testLibID:(NSString *)testLibID
+                andBlock:(void (^)(id data, NSError *error))block;
 /**
  *  崩溃日志
  *
